@@ -1,0 +1,372 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.8rem var(--tint-color);
+}
+
+:root {
+  --main-color: #0062d1;
+  --tint-color: #66a1e3;
+  --tint-color1: #99c0ed;
+  --white--color: #ffffff;
+  --shade--color: #00142a;
+  --dark--color: #111111;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Rubik", sans-serif;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.app {
+  position: relative;
+}
+
+.nav-bar {
+  background-color: var(--main-color);
+  padding: 1.5rem 3rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 4.5rem;
+}
+
+.Links {
+}
+.list {
+  list-style: none;
+  font-size: 1.8rem;
+  color: var(--white--color);
+  display: flex;
+  gap: 2rem;
+}
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item a {
+  text-decoration: none;
+  color: inherit;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  transition: all 0.3s ease-in-out;
+}
+
+.item a:hover {
+  color: var(--tint-color);
+}
+
+.action-btn {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+
+  gap: 1rem;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  border-radius: 0.4rem;
+  width: max-content;
+
+  transition: all 0.3s ease;
+}
+
+.btn-white {
+  width: max-content;
+  color: var(--main-color);
+  background-color: var(--white--color);
+}
+
+.btn-white:hover {
+  opacity: 0.5;
+}
+
+.btn-blue {
+  width: max-content;
+  background-color: var(--main-color);
+  color: var(--white--color);
+  border: 1px solid var(--white--color);
+}
+
+.btn-blue:hover {
+  opacity: 0.5;
+}
+
+.menu-icon {
+  display: none;
+  color: var(--white--color);
+  font-size: 4.2rem;
+}
+
+.mobile-nav-bar {
+  background-color: var(--main-color);
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition: all 0.45s ease-in-out;
+
+  transform: translateY(-100%);
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+}
+
+.show {
+  transform: translateY(0%);
+  visibility: visible;
+}
+
+.head {
+  padding: 1.5rem 3.5rem;
+  display: flex;
+  flex-direction: row-reverse;
+  /* background-color: red; */
+  margin-bottom: 5rem;
+}
+
+.nav-body {
+  align-self: center;
+  justify-self: center;
+}
+
+.nav-body ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.nav-body ul li {
+  font-size: 2.5rem;
+  color: var(--white--color);
+}
+
+/* ======================== Home ========================== */
+
+.container {
+  max-width: 130rem;
+  /* background-color: red; */
+  margin: 0 auto;
+}
+
+.hero {
+  background-color: var(--main-color);
+  padding: 5rem 3rem 8rem 3rem;
+}
+
+.hero-2-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding-top: 5rem;
+  gap: 5rem;
+}
+
+.hero-heading {
+  font-size: 4.8rem;
+  color: var(--white--color);
+  margin-bottom: 3rem;
+}
+
+.hero-img-container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-img-container img {
+  height: auto;
+  width: 90%;
+  border-radius: 0.7rem;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.para {
+  font-size: 2.2rem;
+  /* color: var(--tint-color); */
+  color: var(--tint-color1);
+  line-height: 1.4;
+  margin-bottom: 3rem;
+}
+
+/* ======================== Feature ========================== */
+
+.feture {
+  padding: 3rem;
+}
+
+.feature-3-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4.8rem;
+}
+
+.items {
+  background-color: red;
+}
+
+.section-heading {
+  margin: 5rem 0;
+}
+
+.small-heading {
+  text-transform: uppercase;
+  font-size: 2.5rem;
+  color: var(--main-color);
+  font-weight: 500;
+}
+.big-heading {
+  font-size: 4rem;
+  color: var(--dark--color);
+}
+
+.feature-card {
+  overflow: hidden;
+  background-color: var(--main-color);
+  border-radius: 0.7rem;
+
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: all 0.2s ease-in;
+}
+
+.feature-card:hover {
+  box-shadow: none;
+}
+
+.feature-img {
+  width: 100%;
+}
+
+.text-section {
+  padding: 2.8rem;
+}
+
+.feature-card-heading {
+  color: var(--white--color);
+  font-size: 2.6rem;
+  margin-bottom: 2rem;
+}
+
+.feature-para {
+  font-size: 2.2rem;
+  color: var(--tint-color1);
+}
+/* ======================== Quote ========================== */
+
+.quote {
+  padding: 3rem;
+}
+.quote-container {
+  background-color: var(--main-color);
+  color: var(--white--color);
+  padding: 5rem 5.5rem;
+  border-radius: 0.7rem;
+
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.quote-para {
+  font-size: 3.6rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.quote-para::before {
+  content: "";
+}
+
+.quote-by {
+  font-size: 1.6rem;
+  font-weight: 400;
+  text-align: right;
+  color: var(--tint-color1);
+}
+
+/* ==================== Plan ======================== */
+
+.plan {
+  padding: 3rem;
+}
+
+.plan-2-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4.8rem;
+  padding: 0 25rem;
+}
+
+.plan-card {
+  background-color: red;
+  padding: 3.5rem;
+}
+
+/* ======================================================== */
+@media (max-width: 59.375em) {
+  .Links {
+    display: none;
+  }
+  .nav-bar {
+    padding: 1.5rem 3.5rem;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .hero-2-grid {
+    grid-template-columns: 1fr;
+    padding-top: 0rem;
+  }
+
+  .hero-heading {
+    font-size: 4.5rem;
+    text-align: center;
+  }
+
+  .para {
+    text-align: center;
+  }
+  .btn-white {
+    margin: 0 auto;
+  }
+  .btn-blue {
+    margin: 0 auto;
+  }
+
+  .feature-3-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .text-section {
+    text-align: left;
+  }
+
+  .quote-para {
+    text-align: center;
+    font-size: 3rem;
+  }
+}
