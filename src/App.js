@@ -1,11 +1,12 @@
 import "./App.css";
 import { useState } from "react";
 
-// import { IoMenu } from "react-icons/io5";
-
 import MobileNavbar from "./components/MobileNavbar";
 import NavBar from "./components/Navbar";
-import Home from "./components/Home";
+// import Home from "./components/Home";
+// import About from "./components/About";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -20,7 +21,12 @@ export default function App() {
         onMobileNavbar={handleMobileNavbar}
       />
       <NavBar onMobileNavbar={handleMobileNavbar} />
-      <Home />
+
+      <Contact />
+      {/* <About /> */}
+      {/* <Home /> */}
+      {/* <About /> */}
+      <Footer />
     </div>
   );
 }

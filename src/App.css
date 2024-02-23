@@ -80,6 +80,7 @@ html {
   font-size: 1.8rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-weight: 500;
 
   gap: 1rem;
@@ -315,13 +316,227 @@ html {
 .plan-2-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 4.8rem;
-  padding: 0 25rem;
+  /* gap: 4.8rem; */
+  margin: 0 auto;
+  max-width: 58rem;
 }
 
 .plan-card {
-  background-color: red;
+  background-color: var(--main-color);
+  padding: 2.5rem;
+  border-radius: 0.7rem;
+  color: var(--white--color);
+  border: 0.55rem solid var(--tint-color);
+  box-shadow: rgba(0, 0, 0, 0.16) -20px 20px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.plan-class {
+  text-align: center;
+  font-weight: 100;
+  font-size: 2.8rem;
+  margin-bottom: 2rem;
+}
+.plan-price {
+  font-size: 8.6rem;
+  font-weight: 400;
+  margin-bottom: 8rem;
+  text-align: center;
+}
+
+.plan-price::before {
+  content: "$";
+  font-size: 2.6rem;
+}
+
+.plan-feature {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  grid-template-rows: 1fr;
+  row-gap: 1.5rem;
+  margin-bottom: 5rem;
+}
+
+.feature-icon {
+  font-size: 1.8rem;
+}
+.feature-text {
+  font-size: 1.8rem;
+}
+
+.plan-card .btn-white {
+  width: 100%;
+}
+
+.Premium {
+  transform: scale(1.1);
+}
+
+/* ====================== Footer ======================== */
+
+.footer {
+  margin-top: 10rem;
   padding: 3.5rem;
+  height: 35rem;
+  width: 100%;
+  background-color: var(--main-color);
+  position: relative;
+  color: var(--white--color);
+  z-index: -11;
+}
+
+.social-media-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-media-icon a {
+  color: var(--white--color);
+}
+
+.footer-icon {
+  font-size: 5.6rem;
+}
+
+.copy-right {
+  font-size: 1.4rem;
+  text-align: center;
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -95%);
+}
+/* ====================== Idea ============================ */
+
+.idea {
+  padding: 3.5rem;
+}
+
+.idea-container {
+  padding: 3.5rem;
+  line-height: 1.6;
+  border-radius: 0.7rem;
+  color: var(--white--color);
+  background-color: var(--main-color);
+  font-size: 2.2rem;
+  box-shadow: rgba(0, 0, 0, 0.16) -20px 20px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+/* ====================== Team ============================ */
+
+.team {
+  padding: 3.5rem;
+}
+
+.grid-4-team {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* margin: 0 auto; */
+  gap: 3rem;
+}
+
+.team-card {
+  background-color: var(--main-color);
+  border-radius: 0.7rem;
+  overflow: hidden;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.team-card-img {
+  width: 100%;
+  border-radius: 0.7rem;
+}
+
+.team-card-text {
+  color: var(--white--color);
+  padding: 2rem;
+}
+
+.name {
+  font-size: 2.4rem;
+  font-weight: 500;
+}
+
+.position {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--tint-color);
+}
+
+/* ====================== Contact ============================ */
+
+.contact {
+  padding: 3.5rem;
+}
+
+.contact-container {
+  background-color: var(--main-color);
+  padding: 3.5rem;
+  color: var(--white--color);
+  border-radius: 0.7rem;
+}
+
+.contact-2-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+}
+
+.contact-image {
+  width: 100%;
+  border-radius: 0.7rem;
+}
+
+.field-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5rem;
+}
+
+.field-label {
+  font-size: 2.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field {
+  border: none;
+  border-radius: 0.4rem;
+  height: 3.4rem;
+  width: 100%;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.field-label {
+  font-size: 1.8rem;
+  font-weight: 100;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  height: 33rem;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 1rem 1rem;
+  margin-bottom: 2rem;
+}
+
+form .btn-white {
+  margin-left: auto;
 }
 
 /* ======================================================== */
@@ -368,5 +583,32 @@ html {
   .quote-para {
     text-align: center;
     font-size: 3rem;
+  }
+
+  .plan-2-grid {
+    grid-template-columns: 1fr;
+    gap: 4.8rem;
+    max-width: 35rem;
+  }
+  .Premium {
+    transform: scale(1);
+  }
+
+  .grid-4-team {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-2-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  form .btn-white {
+    margin-left: auto;
+    width: 100%;
   }
 }
