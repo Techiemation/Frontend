@@ -6,6 +6,8 @@ import { RiContactsBook2Line } from "react-icons/ri";
 import { MdChecklistRtl } from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
 import { MdOutlinePersonAdd } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 // import { IoMenu } from "react-icons/io5";
 
 export default function Links() {
@@ -13,33 +15,33 @@ export default function Links() {
     <div className="Links">
       <ul className="list">
         <li className="item">
-          <a href="/">
+          <Link to="/">
             <RiHome3Line /> Home
-          </a>
+          </Link>
         </li>
         <li className="item">
-          <a href="/">
+          <Link to="/">
             <MdChecklistRtl />
             Plan
-          </a>
+          </Link>
         </li>
         <li className="item">
-          <a href="/">
+          <Link to="/about-us">
             <GrGroup /> About
-          </a>
+          </Link>
         </li>
         <li className="item">
-          <a href="/">
+          <Link to="/contact-us">
             <RiContactsBook2Line /> Contact
-          </a>
+          </Link>
         </li>
         <li>
-          <ActionBtn btn={"btn-blue"}>
+          <ActionBtn btn={"btn-blue"} link="/login-signup">
             <CiLogin /> Login
           </ActionBtn>
         </li>
         <li>
-          <ActionBtn icon={""} btn={"btn-white"}>
+          <ActionBtn icon={""} btn={"btn-white"} link="/login-signup">
             <MdOutlinePersonAdd /> Sign Up
           </ActionBtn>
         </li>

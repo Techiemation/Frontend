@@ -1,10 +1,40 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import App from "./App"; // Assuming your main component is named App
+import Prompt from "./pages/prompt";
+import LoginSignUp from "./pages/login-signup";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/prompt",
+    element: <Prompt />,
+  },
+  {
+    path: "/login-signup",
+    element: <LoginSignUp />,
+  },
+  {
+    path: "/about-us",
+    element: <About />,
+  },
+  {
+    path: "/contact-us",
+    element: <Contact />,
+  },
+]);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <RouterProvider router={router} />
   </React.StrictMode>,
   document.getElementById("root")
 );

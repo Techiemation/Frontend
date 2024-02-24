@@ -7,6 +7,7 @@ import { MdOutlinePersonAdd } from "react-icons/md";
 
 import { IoClose } from "react-icons/io5";
 import Drawer from "../components/Drawer";
+import { Link } from "react-router-dom";
 
 import ActionBtn from "../components/ActionBtn";
 
@@ -21,33 +22,33 @@ export default function MobileNavbar({ mobileNavbar, onMobileNavbar }) {
       <div className="nav-body">
         <ul>
           <li className="item">
-            <a href="/">
+            <Link to="/">
               <RiHome3Line /> Home
-            </a>
+            </Link>
           </li>
           <li className="item">
-            <a href="/">
+            <Link to="/">
               <MdChecklistRtl />
               Plane
-            </a>
+            </Link>
           </li>
           <li className="item">
-            <a href="/">
+            <Link to="/about-us">
               <GrGroup /> About
-            </a>
+            </Link>
           </li>
           <li className="item">
-            <a href="/">
+            <Link to="/contact-us">
               <RiContactsBook2Line /> Contact
-            </a>
+            </Link>
           </li>
           <li>
-            <ActionBtn btn={"btn-blue"}>
+            <ActionBtn btn={"btn-blue"} link="/login-signup">
               <CiLogin /> Login
             </ActionBtn>
           </li>
           <li>
-            <ActionBtn icon={""} btn={"btn-white"}>
+            <ActionBtn icon={""} btn={"btn-white"} link="/login-signup">
               <MdOutlinePersonAdd /> Sign Up
             </ActionBtn>
           </li>
