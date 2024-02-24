@@ -3,9 +3,11 @@ import { useState } from "react";
 
 import MobileNavbar from "./components/MobileNavbar";
 import NavBar from "./components/Navbar";
-// import Home from "./components/Home";
-// import About from "./components/About";
-import Contact from "./components/Contact";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import LoginSignUp from "./pages/login-signup";
+import Prompt from "./pages/prompt";
 import Footer from "./components/Footer";
 
 export default function App() {
@@ -16,17 +18,13 @@ export default function App() {
   }
   return (
     <div className="app">
-      <MobileNavbar
+      {/* <MobileNavbar
         mobileNavbar={mobileNavbar}
         onMobileNavbar={handleMobileNavbar}
       />
-      <NavBar onMobileNavbar={handleMobileNavbar} />
-
-      <Contact />
-      {/* <About /> */}
-      {/* <Home /> */}
-      {/* <About /> */}
-      <Footer />
+      <NavBar onMobileNavbar={handleMobileNavbar} /> */}
+      <Home />
+      {/* <Footer /> */}
     </div>
   );
 }

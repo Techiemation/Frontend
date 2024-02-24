@@ -1,7 +1,8 @@
-export default function ActionBtn({ btn, children }) {
+import { Link } from "react-router-dom";
+export default function ActionBtn({ btn, children, link }) {
   return (
-    <a href="/" className={`action-btn ${btn}`}>
+    <Link to={link} className={`action-btn ${btn}`}>
       {children}
-    </a>
+    </Link>
   );
 }

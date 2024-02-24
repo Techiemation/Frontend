@@ -18,7 +18,7 @@ export default function Hero() {
               explicabo ullam eaque eius ab corrupti sequi exercitationem
               voluptatum praesentium suscipit excepturi blanditiis?
             </p>
-            <ActionBtn icon={""} btn={"btn-white"}>
+            <ActionBtn icon={""} btn={"btn-white"} link="prompt">
               Try For Free
               <FaArrowTurnDown />
             </ActionBtn>
