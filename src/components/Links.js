@@ -20,7 +20,7 @@ export default function Links() {
           </Link>
         </li>
         <li className="item">
-          <Link to="/">
+          <Link to="/plan">
             <MdChecklistRtl />
             Plan
           </Link>
@@ -41,7 +41,7 @@ export default function Links() {
           </ActionBtn>
         </li>
         <li>
-          <ActionBtn icon={""} btn={"btn-white"} link="/login-signup">
+          <ActionBtn icon={""} btn={"btn-white"} link="/login-signup+">
             <MdOutlinePersonAdd /> Sign Up
           </ActionBtn>
         </li>

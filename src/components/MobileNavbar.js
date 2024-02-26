@@ -27,9 +27,9 @@ export default function MobileNavbar({ mobileNavbar, onMobileNavbar }) {
             </Link>
           </li>
           <li className="item">
-            <Link to="/">
+            <Link to="/plan">
               <MdChecklistRtl />
-              Plane
+              Plan
             </Link>
           </li>
           <li className="item">
@@ -48,7 +48,7 @@ export default function MobileNavbar({ mobileNavbar, onMobileNavbar }) {
             </ActionBtn>
           </li>
           <li>
-            <ActionBtn icon={""} btn={"btn-white"} link="/login-signup">
+            <ActionBtn icon={""} btn={"btn-white"} link="/login-signup+">
               <MdOutlinePersonAdd /> Sign Up
             </ActionBtn>
           </li>

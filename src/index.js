@@ -7,6 +7,7 @@ import Prompt from "./pages/prompt";
 import LoginSignUp from "./pages/login-signup";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Payment from "./pages/payment";
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,16 @@ const router = createBrowserRouter([
     element: <Prompt />,
   },
   {
+    path: "/plan",
+    element: <Payment />,
+  },
+  {
     path: "/login-signup",
-    element: <LoginSignUp />,
+    element: <LoginSignUp form="Login" />,
+  },
+  {
+    path: "/login-signup+",
+    element: <LoginSignUp form="Sign Up" />,
   },
   {
     path: "/about-us",

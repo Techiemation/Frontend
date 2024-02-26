@@ -134,6 +134,8 @@ html {
   display: flex;
   flex-direction: column;
   visibility: hidden;
+
+  z-index: 1;
 }
 
 .show {
@@ -346,7 +348,7 @@ html {
 }
 
 .plan-price::before {
-  content: "$";
+  content: "Rs.";
   font-size: 2.6rem;
 }
 
@@ -383,7 +385,7 @@ html {
   background-color: var(--main-color);
   position: relative;
   color: var(--white--color);
-  z-index: -11;
+  z-index: 11;
 }
 
 .social-media-icon {
@@ -499,7 +501,7 @@ html {
 .field-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 5rem;
+  gap: 3rem;
 }
 
 .field-label {
@@ -518,11 +520,20 @@ html {
   width: 100%;
   padding-left: 1rem;
   margin-bottom: 2rem;
+
+  font-size: 1.6rem;
 }
 
 .field-label {
   font-size: 1.8rem;
   font-weight: 100;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.field-label-head {
+  font-size: 3rem;
+  font-weight: 600;
   margin-bottom: 1rem;
   display: block;
 }
@@ -585,6 +596,7 @@ form .btn-white {
   .quote-para {
     text-align: center;
     font-size: 3rem;
+    text-transform: capitalize;
   }
 
   .plan-2-grid {
@@ -606,7 +618,7 @@ form .btn-white {
 
   .field-container {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0rem;
   }
 
   form .btn-white {
@@ -735,7 +747,7 @@ form .btn-white {
 
 .diff-btn {
   height: 50%;
-  border-radius: 0.7rem;
+  border-radius: 0.4rem;
   background-color: var(--white--color);
   padding: 0.5rem;
   display: flex;
@@ -751,7 +763,7 @@ form .btn-white {
   height: 100%;
   display: flex;
   align-items: center;
-  border-radius: 0.7rem;
+  border-radius: 0.4rem;
   color: var(--main-color);
 
   cursor: pointer;
@@ -880,7 +892,7 @@ form .btn-white {
 
 .form-diff-btn {
   height: 4.8rem;
-  border-radius: 0.7rem;
+  border-radius: 0.4rem;
   background-color: var(--white--color);
   padding: 0.5rem;
   display: flex;
@@ -896,7 +908,7 @@ form .btn-white {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0.7rem;
+  border-radius: 0.4rem;
   color: var(--main-color);
 
   cursor: pointer;
@@ -908,21 +920,15 @@ form .btn-white {
   flex-direction: column;
   gap: 1rem;
   font-size: 1.3rem;
-  color: #cce0f6;
+  /* color: #cce0f6; */
 }
 .text-input {
   display: flex;
   flex-direction: column;
 }
-.text-input input {
-  border-radius: 0.5rem;
-  height: 3rem;
-  border: none;
-  padding: 0.4rem;
-  font-size: 1.8rem;
-}
-.form-login a {
-  color: #cce0f6;
+
+.form-login .forgot {
+  color: var(--white--color);
   text-decoration: none;
 }
 .form-remeber-me {
@@ -934,24 +940,15 @@ form .btn-white {
   vertical-align: middle;
   margin-bottom: 2px;
 }
-.form-box button {
-  font-weight: 600;
-  color: var(--main-color);
-  width: 30%;
-  height: 3rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem 1.4rem;
-  font-size: 1.6rem;
-  background-color: var(--white--color);
-  margin: 1rem 0 1rem auto;
-  transition: all 0.3s;
+.form-box-button {
+  width: 14rem;
+  margin-top: 2rem;
 }
-.form-box button:hover {
+
+/* .form-box button:hover {
   background-color: var(--tint-color1);
   transition: all 0.3s;
-}
+} */
 
 .form-alt {
   color: var(--white--color);
@@ -971,5 +968,6 @@ form .btn-white {
   font-size: 1.2rem;
   top: -2.2rem;
   padding: 0.4rem;
+  z-index: 0;
   background-color: var(--main-color);
 }
