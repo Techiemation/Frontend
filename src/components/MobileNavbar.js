@@ -48,7 +48,7 @@ export default function MobileNavbar({ mobileNavbar, onMobileNavbar }) {
             </ActionBtn>
           </li>
           <li>
-            <ActionBtn icon={""} btn={"btn-white"} link="/login-signup">
+            <ActionBtn icon={""} btn={"btn-white"} link="/login-signup+">
               <MdOutlinePersonAdd /> Sign Up
             </ActionBtn>
           </li>

@@ -10,7 +10,7 @@ export default function Quote() {
             "Without education it is complete darkness and with education it is
             light"
           </p>
-          <h3 className="quote-by">Quaide-e-Azam</h3>
+          <h3 className="quote-by">Quaid-e-Azam</h3>
         </div>
       </div>
     </div>

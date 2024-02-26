@@ -1,8 +1,8 @@
 import { useState } from "react";
-import whiteLogo from "../resourses/Logo/whiteLogo.png";
+// import whiteLogo from "../resourses/Logo/whiteLogo.png";
 import { CgCloseO } from "react-icons/cg";
 import ActionBtn from "../components/ActionBtn";
-import { Link } from "react-router-dom";
+
 import Logo from "../components/Logo";
 
 export default function Prompt() {
