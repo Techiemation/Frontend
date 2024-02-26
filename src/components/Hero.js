@@ -17,7 +17,7 @@ export default function Hero() {
               Access tech content in your preferred language, breaking down
               barriers to learning. Summarizing vast online resources for
               effortless comprehension. Empowering global learners with
-              personalized, localized educational experiences."
+              personalized, localized educational experiences.
             </p>
             <ActionBtn icon={""} btn={"btn-white"} link="prompt">
               Try For Free
