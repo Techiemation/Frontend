@@ -50,7 +50,7 @@ function PlanCard({ price, userClass }) {
       <p className="plan-class">{userClass}</p>
       <p className="plan-price">{price}</p>
       {features}
-      <ActionBtn icon={""} btn={"btn-white"}>
+      <ActionBtn icon={""} btn={"btn-white"} link="/plan">
         Buy Now
       </ActionBtn>
     </div>
