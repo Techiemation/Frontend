@@ -25,7 +25,7 @@ export default function Footer() {
         </a>
       </div>
       <div className="copy-right">
-        Copyright © 2024 Design by Yaseen Amin & Basit Ali
+        Copyright © 2024 Techiemation | All Rights Reserved
       </div>
     </div>
   );

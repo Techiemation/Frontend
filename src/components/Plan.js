@@ -1,6 +1,6 @@
 import SectionHeading from "./SectionHeading";
-import { ImInfinite } from "react-icons/im";
-import { FaCheck } from "react-icons/fa6";
+// import { ImInfinite } from "react-icons/im";
+import { FaCheck, FaXmark } from "react-icons/fa6";
 
 import ActionBtn from "./ActionBtn";
 
@@ -10,8 +10,8 @@ export default function Plan() {
       <div className="container">
         <SectionHeading shortheading={"our"} mainHeading={"Plan"} />
         <div className="plan-2-grid">
-          <PlanCard price={0} userClass={"Free"} />
-          <PlanCard price={10} userClass={"Premium"} />
+          <PlanCard price={200} userClass={"Basic"} />
+          <PlanCard price={999} userClass={"Premium"} />
         </div>
       </div>
     </div>
@@ -21,14 +21,14 @@ export default function Plan() {
 function PlanCard({ price, userClass }) {
   let features = null;
 
-  if (userClass === "Free") {
+  if (userClass === "Basic") {
     features = (
       <div className="plan-feature">
         <FaCheck className="feature-icon" />
         <p className="feature-text">Unlimited Access</p>
-        <ImInfinite className="feature-icon" />
+        <FaXmark className="feature-icon" />
         <p className="feature-text">History</p>
-        <ImInfinite className="feature-icon" />
+        <FaXmark className="feature-icon" />
         <p className="feature-text">Regional Language</p>
       </div>
     );

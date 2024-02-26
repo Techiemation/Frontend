@@ -348,7 +348,7 @@ html {
 }
 
 .plan-price::before {
-  content: "$";
+  content: "Rs.";
   font-size: 2.6rem;
 }
 
@@ -531,6 +531,13 @@ html {
   display: block;
 }
 
+.field-label-head {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: block;
+}
+
 .contact-container textarea {
   resize: none;
   width: 100%;
@@ -589,6 +596,7 @@ form .btn-white {
   .quote-para {
     text-align: center;
     font-size: 3rem;
+    text-transform: capitalize;
   }
 
   .plan-2-grid {

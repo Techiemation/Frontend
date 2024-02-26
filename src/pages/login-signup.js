@@ -34,44 +34,6 @@ export default function LoginSignUp({ form = "Login" }) {
       />
       <NavBar onMobileNavbar={handleMobileNavbar} />
 
-      {/* <main className="login-signup-container">
-        <SectionHeading
-          shortheading={"login / sign up"}
-          mainHeading={"Account"}
-        />
-
-        <div className="login-signup-box">
-          <img src={loginImage} alt="SignIn" />
-
-          <div className="form-box">
-            <div className="form-diff-btn">
-              <div
-                onClick={(e) => handleChangeForm(e)}
-                className={`form-btn ${currentForm === "Login" && "active"}`}
-              >
-                Login
-              </div>
-              <div
-                onClick={(e) => handleChangeForm(e)}
-                className={`form-btn ${currentForm === "Sign Up" && "active"}`}
-              >
-                Sign Up
-              </div>
-            </div>
-            {currentForm === "Login" ? <LoginForm /> : <SignUpForm />}
-            <div className="form-alt">
-              <a href="">
-                <FaFacebook className="footer-icon" />
-              </a>
-              <span>OR</span>
-              <a href="">
-                <FaGoogle className="footer-icon" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </main> */}
-
       <main className="contact">
         <div className="container">
           <SectionHeading
@@ -80,7 +42,7 @@ export default function LoginSignUp({ form = "Login" }) {
           />
           <div className="contact-container">
             <div className="contact-2-grid">
-              <img src={loginImage} alt="" className="contact-image" />
+              <img src={loginImage} alt="login" className="contact-image" />
 
               <div className="form-box">
                 <div className="form-diff-btn">

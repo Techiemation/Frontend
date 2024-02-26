@@ -1,6 +1,6 @@
 import SectionHeading from "../components/SectionHeading";
 import ActionBtn from "../components/ActionBtn";
-import contactImage from "../resourses/illustration/12982910_5124556.jpg";
+import paymentImage from "../resourses/illustration/8174445_3857457.jpg";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import { FiSend } from "react-icons/fi";
 
-export default function Contact() {
+export default function Payment() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
 
   function handleMobileNavbar() {
@@ -24,35 +24,43 @@ export default function Contact() {
 
       <main className="contact">
         <div className="container">
-          <SectionHeading shortheading={"contact"} mainHeading={"Form"} />
+          <SectionHeading shortheading={"payment"} mainHeading={"Details"} />
           <div className="contact-container">
             <div className="contact-2-grid">
-              <img src={contactImage} alt="contact" className="contact-image" />
+              <img src={paymentImage} alt="payment" className="contact-image" />
               <form action="">
+                <label className="field-label-head">Payment Method:</label>
                 <div className="field-container">
                   <div className="field">
                     <label htmlFor="" className="field-label">
-                      Name
+                      Card Number
                     </label>
                     <input type="text" name="" id="" className="input-field" />
                   </div>
                   <div className="field">
                     <label htmlFor="" className="field-label">
-                      Last Name
+                      Postal Code
                     </label>
                     <input type="text" name="" id="" className="input-field" />
                   </div>
                 </div>
-                <label htmlFor="" className="field-label">
-                  Last Name
-                </label>
-                <input type="text" name="" id="" className="input-field" />
-                <label htmlFor="" className="field-label">
-                  Message
-                </label>
-                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <div className="field-container">
+                  <div className="field">
+                    <label htmlFor="" className="field-label">
+                      Expiration Date
+                    </label>
+                    <input type="text" name="" id="" className="input-field" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="" className="field-label">
+                      CVV
+                    </label>
+                    <input type="text" name="" id="" className="input-field" />
+                  </div>
+                </div>
+                <br />
                 <ActionBtn icon={""} btn={"btn-white"}>
-                  Send <FiSend />
+                  Subscribe <FiSend />
                 </ActionBtn>
               </form>
             </div>

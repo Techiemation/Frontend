@@ -27,9 +27,9 @@ export default function MobileNavbar({ mobileNavbar, onMobileNavbar }) {
             </Link>
           </li>
           <li className="item">
-            <Link to="/">
+            <Link to="/plan">
               <MdChecklistRtl />
-              Plane
+              Plan
             </Link>
           </li>
           <li className="item">

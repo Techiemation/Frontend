@@ -7,8 +7,8 @@ export default function Quote() {
         <SectionHeading shortheading={"Our"} mainHeading={"Belief"} />
         <div className="quote-container">
           <p className="quote-para">
-            "Without education it is complete darkness and with education it is
-            light"
+            "Without Education it is Complete Darkness and with Education it is
+            Light"
           </p>
           <h3 className="quote-by">Quaid-e-Azam</h3>
         </div>

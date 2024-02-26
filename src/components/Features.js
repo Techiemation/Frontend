@@ -15,21 +15,21 @@ export default function Features() {
             featureImage={Summarization}
             featureHeading={"Summarization"}
             featurePara={
-              "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid enim eaque debitis molestias! Provident facilis culpa eos temporibus ullam. Quisquam exercitationem vitae accusantium deleniti est aperiam ratione esse culpa distinctio?"
+              "Our summarization technology condenses lengthy texts into concise summaries, saving you time and effort. With advanced algorithms, we extract key insights, ensuring you grasp the essence of any document swiftly and accurately."
             }
           />
           <FeatureCard
             featureImage={Translation}
             featureHeading={"Translation"}
             featurePara={
-              "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid enim eaque debitis molestias! Provident facilis culpa eos temporibus ullam. Quisquam exercitationem vitae accusantium deleniti est aperiam ratione esse culpa distinctio?"
+              "Break language barriers effortlessly with our seamless translation feature. Powered by state-of-the-art algorithms, our platform translates content into multiple languages, including Urdu and Sindhi, ensuring clear and accurate communication across linguistic boundaries."
             }
           />
           <FeatureCard
             featureImage={Scraping}
             featureHeading={"Scraping"}
             featurePara={
-              "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid enim eaque debitis molestias! Provident facilis culpa eos temporibus ullam. Quisquam exercitationem vitae accusantium deleniti est aperiam ratione esse culpa distinctio?"
+              "Unlock a wealth of online knowledge with our comprehensive scraping capabilities. Our intelligent tools meticulously gather relevant information from diverse sources, ensuring you access the latest content for your learning needs effortlessly."
             }
           />
         </div>

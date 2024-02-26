@@ -13,10 +13,11 @@ export default function Hero() {
               Boost Your Learning Uncover Powerfull Strategies for Success
             </h1>
             <p className="para">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus,
-              sint temporibus debitis obcaecati ex dignissimos tempore atque
-              explicabo ullam eaque eius ab corrupti sequi exercitationem
-              voluptatum praesentium suscipit excepturi blanditiis?
+              Bridging Language Gaps for Enhanced Computer Science Education.
+              Access tech content in your preferred language, breaking down
+              barriers to learning. Summarizing vast online resources for
+              effortless comprehension. Empowering global learners with
+              personalized, localized educational experiences."
             </p>
             <ActionBtn icon={""} btn={"btn-white"} link="prompt">
               Try For Free

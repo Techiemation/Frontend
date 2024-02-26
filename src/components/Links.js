@@ -20,7 +20,7 @@ export default function Links() {
           </Link>
         </li>
         <li className="item">
-          <Link to="/">
+          <Link to="/plan">
             <MdChecklistRtl />
             Plan
           </Link>
