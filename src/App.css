@@ -531,13 +531,6 @@ html {
   display: block;
 }
 
-.field-label-head {
-  font-size: 3rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  display: block;
-}
-
 .contact-container textarea {
   resize: none;
   width: 100%;
@@ -550,6 +543,68 @@ html {
 
 form .btn-white {
   margin-left: auto;
+}
+
+/* ========================= Payment ==================== */
+.payment {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.field-label-head {
+  display: block;
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 0;
+}
+
+.payment-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.payment-box {
+  display: flex;
+  gap: 1rem;
+  border: var(--white--color) solid 0.2rem;
+  border-radius: 0.6rem;
+  padding: 1.5rem 2rem;
+}
+
+.payment-heading {
+  font-size: 1.6rem;
+  color: var(--white--color);
+}
+.payment-price {
+  font-size: 1.2rem;
+  color: var(--tint-color1);
+}
+.payment-box input {
+  width: 1.5rem;
+  border: var(--dark--color) solid 1rem;
+}
+.method {
+  display: flex;
+  gap: 3rem;
+  font-size: 1.4rem;
+}
+
+.payment hr {
+  height: 0.2rem;
+  background-color: var(--white--color);
+  border: solid 0.1rem;
+  border-radius: 5rem;
+  color: var(--white--color);
+}
+.bill span {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: var(--white--color);
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
 }
 
 /* ======================================================== */
