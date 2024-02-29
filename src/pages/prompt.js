@@ -1,6 +1,9 @@
 import { useState } from "react";
-// import whiteLogo from "../resourses/Logo/whiteLogo.png";
+import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
+import { MdOutlineSummarize } from "react-icons/md";
+import { MdOutlineTranslate } from "react-icons/md";
+import { MdOutlineContentPasteSearch } from "react-icons/md";
 import ActionBtn from "../components/ActionBtn";
 
 import Logo from "../components/Logo";
@@ -76,7 +79,7 @@ export default function Prompt() {
       </div>
       <div className="prompt-container">
         <div className="nav-section">
-          <Logo />
+          <Logo logo={whiteLogo} />
           <div className="diff-btn">
             <div
               onClick={(e) => handleChangeMethod(e)}
@@ -127,7 +130,9 @@ function LinkPrompt({ language, selectLanguage, onAdd }) {
       </select>
       <textarea className="link-result" placeholder="Summarization result" />
       <input className="link" placeholder="https://www.google.com/" />
-      <ActionBtn btn={"btn-white prompt-link-btn"}>Search</ActionBtn>
+      <ActionBtn btn={"btn-white prompt-link-btn"}>
+        <MdOutlineContentPasteSearch /> Search
+      </ActionBtn>
     </div>
   );
 }
@@ -153,7 +158,10 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
           value={userPrompt}
           onChange={(e) => setUserPrompt(e.target.value)}
         />
-        <ActionBtn btn="btn-white prompt-text-btn">Summarize</ActionBtn>
+        <ActionBtn btn="btn-white prompt-text-btn">
+          <MdOutlineSummarize />
+          Summarize
+        </ActionBtn>
       </form>
 
       <form className="text-prompt">
@@ -174,8 +182,9 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
         <ActionBtn
           btn="btn-white prompt-text-btn"
           onClick={(e) => onAdd(e, getHistory())}
+          link="https://techiemationtranslator.azurewebsites.net/"
         >
-          Translate
+          <MdOutlineTranslate /> Translate
         </ActionBtn>
       </form>
     </div>

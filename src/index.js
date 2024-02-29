@@ -1,5 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import App from "./App"; // Assuming your main component is named App
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/plan",
-    element: <Payment />,
+    element: <Payment plan_="Basic" />,
+  },
+  {
+    path: "/plan+",
+    element: <Payment plan_="Premium" />,
   },
   {
     path: "/login-signup",
@@ -40,10 +45,17 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.render(
+// ReactDOM.render(
+//   <React.StrictMode>
+//     {/* <App /> */}
+//     <RouterProvider router={router} />
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// );
+
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     {/* <App /> */}
     <RouterProvider router={router} />
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );

@@ -1,6 +1,7 @@
 import Idea from "../components/idea";
 import NavBar from "../components/Navbar";
 import Team from "../components/Team";
+import Patner from "../components/Patner";
 import Technology from "../components/Technology";
 import MobileNavbar from "../components/MobileNavbar";
 import { useState } from "react";
@@ -23,6 +24,7 @@ export default function About() {
       <main className="about">
         <Idea />
         <Team />
+        <Patner />
         <Technology />
       </main>
       <Footer />

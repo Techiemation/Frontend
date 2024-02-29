@@ -351,6 +351,11 @@ html {
   content: "Rs.";
   font-size: 2.6rem;
 }
+.plan-price::after {
+  content: "/mo";
+  color: var(--tint-color);
+  font-size: 2.6rem;
+}
 
 .plan-feature {
   display: grid;
@@ -474,6 +479,21 @@ html {
   color: var(--tint-color);
 }
 
+/* .partner-container {
+  display: flex;
+  justify-content: center;
+  background-color: var(--main-color);
+  color: var(--white--color);
+  padding: 3.5rem;
+  border-radius: 0.7rem;
+
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+} */
+
+.partner-img {
+  width: 100%;
+}
+
 /* ====================== Contact ============================ */
 
 .contact {
@@ -588,7 +608,22 @@ form .btn-white {
 .method {
   display: flex;
   gap: 3rem;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  align-items: center;
+}
+.method span,
+.method label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.payment-icon {
+  /* height: 100%; */
+  font-size: 2.4rem;
 }
 
 .payment hr {
@@ -679,6 +714,11 @@ form .btn-white {
   form .btn-white {
     margin-left: auto;
     width: 100%;
+  }
+  .field-label-head {
+    /* line-height: 5rem; */
+    margin-top: 3rem;
+    margin-bottom: 2rem;
   }
 }
 

@@ -6,14 +6,24 @@ import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
 import { useState } from "react";
 
+import { RiPaypalLine } from "react-icons/ri";
+import { BsCreditCard } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-export default function Payment() {
+export default function Payment({ plan_ = "Basic" }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
+  const [price, setPrice] = useState(plan_ === "Basic" ? 200 : 999);
+
+  const location = useLocation();
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scrolls to the top of the page when location changes
+  }, [location]);
   return (
     <>
       <MobileNavbar
@@ -28,6 +38,7 @@ export default function Payment() {
           <div className="contact-container">
             <div className="contact-2-grid">
               <img src={paymentImage} alt="payment" className="contact-image" />
+
               <form action="" className="payment">
                 <span className="payment-container">
                   <div className="payment-box">
@@ -35,26 +46,49 @@ export default function Payment() {
                       <p className="payment-heading">Basic Monthly</p>
                       <p className="payment-price">Rs.200/month</p>
                     </label>
-                    <input type="radio" name="subscription-plan" id="basic" />
+                    <input
+                      type="radio"
+                      name="subscription-plan"
+                      id="basic"
+                      value={200}
+                      onChange={(e) => setPrice(e.target.value)}
+                      defaultChecked={plan_ === "Basic"}
+                    />
                   </div>
                   <div className="payment-box">
                     <label className="payment-desc">
                       <p className="payment-heading">Premium Monthly</p>
                       <p className="payment-price">Rs.999/month</p>
                     </label>
-                    <input type="radio" name="subscription-plan" id="premium" />
+                    <input
+                      type="radio"
+                      name="subscription-plan"
+                      id="premium"
+                      value={999}
+                      onChange={(e) => setPrice(e.target.value)}
+                      defaultChecked={plan_ === "Premium"}
+                    />
                   </div>
                 </span>
 
                 <label className="field-label-head">Payment Method:</label>
                 <div className="method">
                   <span>
-                    <label>💵 PayPal </label>
-                    <input type="radio" name="payment-method" id="paypal" />
+                    <label>
+                      <BsCreditCard className="payment-icon" /> Credit Card{" "}
+                    </label>
+                    <input
+                      type="radio"
+                      name="payment-method"
+                      id="card"
+                      defaultChecked
+                    />
                   </span>
                   <span>
-                    <label>💳 Credit Card </label>
-                    <input type="radio" name="payment-method" id="card" />
+                    <label>
+                      <RiPaypalLine className="payment-icon" /> PayPal{" "}
+                    </label>
+                    <input type="radio" name="payment-method" id="paypal" />
                   </span>
                 </div>
                 <div className="input-container">
@@ -111,12 +145,12 @@ export default function Payment() {
                 <div className="bill">
                   <span>
                     <p>Sub Total</p>
-                    <p>Rs.999</p>
+                    <p>Rs.{price}</p>
                   </span>
 
                   <span>
                     <p>Billed Amount</p>
-                    <p>Rs.1000</p>
+                    <p>Rs.{price}</p>
                   </span>
                 </div>
                 <ActionBtn icon={""} btn={"btn-white"}>

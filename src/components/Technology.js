@@ -24,12 +24,12 @@ export default function Technology() {
           />
           <TeamCard
             image={post}
-            name={"Postgres Database"}
+            name={"PostgreSQL Database"}
             position={"Database Technology"}
           />
           <TeamCard
             image={azur}
-            name={"Azur Cloud"}
+            name={"Azure Cloud"}
             position={"Cloud Technology"}
           />
         </div>
