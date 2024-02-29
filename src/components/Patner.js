@@ -7,10 +7,7 @@ export default function Patner() {
     <div className="quote">
       <div className="container">
         <SectionHeading shortheading={"Our"} mainHeading={"Partner"} />
-        {/* <div className="partner-container"> */}
-        {/* <img src={MsLight} alt="Patner" className="patner-img" /> */}
         <img src={MsDark} alt="Partner" className="partner-img" />
-        {/* </div> */}
       </div>
     </div>
   );

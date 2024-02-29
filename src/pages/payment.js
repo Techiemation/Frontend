@@ -21,9 +21,12 @@ export default function Payment({ plan_ = "Basic" }) {
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
+
+  // Scrolls to the top of the page when location changes
   useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls to the top of the page when location changes
+    window.scrollTo(0, 0);
   }, [location]);
+
   return (
     <>
       <MobileNavbar
