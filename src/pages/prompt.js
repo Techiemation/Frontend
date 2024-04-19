@@ -4,6 +4,13 @@ import { CgCloseO } from "react-icons/cg";
 import { MdOutlineSummarize } from "react-icons/md";
 import { MdOutlineTranslate } from "react-icons/md";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
+import { BiSolidArrowToLeft, BiSolidArrowFromLeft } from "react-icons/bi";
+import { PiTextTBold } from "react-icons/pi";
+// import { PiTextT } from "react-icons/pi";
+// import { MdLink } from "react-icons/md";
+import { IoLinkSharp } from "react-icons/io5";
+// import { FaLink } from "react-icons/fa";
+
 import ActionBtn from "../components/ActionBtn";
 
 import Logo from "../components/Logo";
@@ -43,9 +50,8 @@ export default function Prompt() {
   const [language, setLanguage] = useState(1);
   const [historyList, setHistoryList] = useState(initialHistoryList);
 
-  function handleChangeMethod(e) {
-    // console.log(e.target.innerText);
-    setMethod(e.target.innerText === method ? method : e.target.innerText);
+  function handleChangeMethod(input) {
+    setMethod(input === method ? method : input);
   }
 
   function handleLanguageChange(lang) {
@@ -63,9 +69,18 @@ export default function Prompt() {
     setHistoryList(() => [...historyList, history]);
   }
 
+  const [sideBar, setSideBar] = useState(true);
+  const historyBar = sideBar ? "" : "history-hide";
+
   return (
     <div className="prompt">
-      <div className="history">
+      <div className={`history ${historyBar}`}>
+        <div className="icon-bar">
+          <BiSolidArrowToLeft
+            className="sidebar-close"
+            onClick={() => setSideBar(!sideBar)}
+          />
+        </div>
         <h1 className="history-heading">history</h1>
         <div className="history-boxes">
           {historyList.map((history) => (
@@ -78,20 +93,30 @@ export default function Prompt() {
         </div>
       </div>
       <div className="prompt-container">
+        <BiSolidArrowFromLeft
+          className="sidebar-open"
+          onClick={() => setSideBar(!sideBar)}
+        />
         <div className="nav-section">
           <Logo logo={whiteLogo} />
           <div className="diff-btn">
             <div
-              onClick={(e) => handleChangeMethod(e)}
+              onClick={(e) => handleChangeMethod("Text")}
               className={`btn ${method === "Text" && "active"}`}
             >
-              Text
+              {/* <PiTextTBold /> */}
+              {/* <PiTextT /> */}
+              <PiTextTBold className="icon" />
+              <span className="btn-text">Text</span>
             </div>
             <div
-              onClick={(e) => handleChangeMethod(e)}
+              onClick={(e) => handleChangeMethod("Link")}
               className={`btn ${method === "Link" && "active"}`}
             >
-              Link
+              {/* <IoLinkSharp />
+              Link */}
+              <IoLinkSharp className="icon" />
+              <span className="btn-text">Link</span>
             </div>
           </div>
           <div className="profile">
@@ -131,7 +156,7 @@ function LinkPrompt({ language, selectLanguage, onAdd }) {
       <textarea className="link-result" placeholder="Summarization result" />
       <input className="link" placeholder="https://www.google.com/" />
       <ActionBtn btn={"btn-white prompt-link-btn"}>
-        <MdOutlineContentPasteSearch /> Search
+        <MdOutlineContentPasteSearch /> <span className="btn-text">Search</span>
       </ActionBtn>
     </div>
   );
