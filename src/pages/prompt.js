@@ -15,7 +15,7 @@ import { IoLinkSharp } from "react-icons/io5";
 import ActionBtn from "../components/ActionBtn";
 
 import Logo from "../components/Logo";
-import { render } from "@testing-library/react";
+//import { render } from "@testing-library/react";
 
 export default function Prompt() {
   const initialHistoryList = [
@@ -49,7 +49,7 @@ export default function Prompt() {
   ];
 
   const [method, setMethod] = useState("Text");
-  const [language, setLanguage] = useState(1);
+  const [language, setLanguage] = useState("en");
   const [historyList, setHistoryList] = useState(initialHistoryList);
 
   function handleChangeMethod(input) {
@@ -178,13 +178,14 @@ function LinkPrompt({ language, selectLanguage, onAdd }) {
   return (
     <div className="prompt-link">
       <select
+        name="language-input"
         className="language-selector"
         value={language}
         onChange={(e) => selectLanguage(e.target.value)}
       >
-        <option value={1}>English</option>
-        <option value={2}>Urdu</option>
-        <option value={3}>Sindhi</option>
+        <option value={"en"}>English</option>
+        <option value={"ur"}>Urdu</option>
+        <option value={"sd"}>Sindhi</option>
       </select>
       <textarea
         className="link-result"
@@ -219,15 +220,32 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
       result: summarizedPrompt,
     };
   }
+
+  const summarizeText = () => {
+    axios
+      .post("http://127.0.0.1:5000/translator", {
+        language: language,
+        text: userPrompt,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setSummarizedPrompt(response.data["translated_text"]);
+      })
+      .catch((error) => {
+        console.error("Error summarizing text:", error);
+      });
+  };
+
   return (
     <div className="prompt-text">
       <form className="text-prompt">
         <textarea
+          name="text-input"
           placeholder="Enter Text For Summarization"
           value={userPrompt}
           onChange={(e) => setUserPrompt(e.target.value)}
         />
-        <ActionBtn btn="btn-white prompt-text-btn">
+        <ActionBtn btn="btn-white prompt-text-btn" onClick={summarizeText}>
           <MdOutlineSummarize />
           Summarize
         </ActionBtn>
@@ -235,15 +253,17 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
 
       <form className="text-prompt">
         <select
+          name="language-input"
           className="language-selector"
           value={language}
           onChange={(e) => selectLanguage(e.target.value)}
         >
-          <option value={1}>English</option>
-          <option value={2}>Urdu</option>
-          <option value={3}>Sindhi</option>
+          <option value={"en"}>English</option>
+          <option value={"ur"}>Urdu</option>
+          <option value={"sd"}>Sindhi</option>
         </select>
         <textarea
+          name="text-output"
           placeholder="Your Text's Summarization"
           value={summarizedPrompt}
           onChange={(e) => setSummarizedPrompt(e.target.value)}
