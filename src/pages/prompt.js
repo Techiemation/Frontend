@@ -67,7 +67,7 @@ export default function Prompt() {
 
   function handleOnAdd(e, history) {
     e.preventDefault();
-    console.log(history);
+    // console.log(history);
     setHistoryList(() => [...historyList, history]);
   }
 
@@ -144,12 +144,12 @@ export default function Prompt() {
 }
 
 function LinkPrompt({ language, selectLanguage, onAdd }) {
-  function renderResult(content) {
-    if (!content) return "";
-    return Object.entries(content)
-      .map(([heading, text]) => `${heading}\n${text}\n`)
-      .join("\n");
-  }
+  // function renderResult(content) {
+  //   if (!content) return "";
+  //   return Object.entries(content)
+  //     .map(([heading, text]) => `${heading}\n${text}\n`)
+  //     .join("\n");
+  // }
 
   const [link, setLink] = useState("");
   const [result, setResult] = useState("");
@@ -166,8 +166,8 @@ function LinkPrompt({ language, selectLanguage, onAdd }) {
       .get(`http://127.0.0.1:5000/api/scrape?url=${encodeURIComponent(link)}`)
       .then((response) => {
         // Update the result state with the fetched data
-        // console.log(response.data);
-        setResult(renderResult(response.data));
+        console.log(response.data);
+        setResult(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -209,7 +209,8 @@ function LinkPrompt({ language, selectLanguage, onAdd }) {
 
 function TextPrompt({ language, selectLanguage, onAdd }) {
   const [userPrompt, setUserPrompt] = useState("");
-  const [summarizedPrompt, setSummarizedPrompt] = useState("");
+  let summarizedPrompt;
+  const [translatedPrompt, setTranslatedPrompt] = useState("");
 
   function getHistory() {
     return {
@@ -217,11 +218,27 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
       title: userPrompt.split(" ").splice(0, 2).join(" "),
       method: "Text",
       prompt: userPrompt,
-      result: summarizedPrompt,
+      summarizeText: summarizedPrompt,
+      translateText: translatedPrompt,
     };
   }
 
   const summarizeText = () => {
+    axios
+      .post("http://127.0.0.1:5000/summarize", {
+        text: userPrompt,
+      })
+      .then((response) => {
+        console.log(response.data);
+        summarizedPrompt = response.data["summarized_text"];
+        setUserPrompt(summarizedPrompt);
+      })
+      .catch((error) => {
+        console.error("Error Summarizing Text:", error);
+      });
+  };
+
+  const translateText = () => {
     axios
       .post("http://127.0.0.1:5000/translator", {
         language: language,
@@ -229,12 +246,33 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
       })
       .then((response) => {
         console.log(response.data);
-        setSummarizedPrompt(response.data["translated_text"]);
+        setTranslatedPrompt(response.data["translated_text"]);
       })
       .catch((error) => {
-        console.error("Error summarizing text:", error);
+        console.error("Error Translating Text:", error);
       });
   };
+
+  function handleOnSummarize(e) {
+    console.log("Summarize function triggered");
+    if (userPrompt === "") {
+      alert("Error! Please Enter Text to Summarize.");
+      return;
+    } else {
+      onAdd(e, getHistory());
+      summarizeText();
+    }
+  }
+
+  function handleOnTranslate() {
+    console.log("Translate function triggered");
+    if (userPrompt === "") {
+      alert("Error! Please Enter Text to Translated.");
+      return;
+    } else {
+      translateText();
+    }
+  }
 
   return (
     <div className="prompt-text">
@@ -245,7 +283,7 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
           value={userPrompt}
           onChange={(e) => setUserPrompt(e.target.value)}
         />
-        <ActionBtn btn="btn-white prompt-text-btn" onClick={summarizeText}>
+        <ActionBtn btn="btn-white prompt-text-btn" onClick={handleOnSummarize}>
           <MdOutlineSummarize />
           Summarize
         </ActionBtn>
@@ -265,14 +303,10 @@ function TextPrompt({ language, selectLanguage, onAdd }) {
         <textarea
           name="text-output"
           placeholder="Your Text's Summarization"
-          value={summarizedPrompt}
-          onChange={(e) => setSummarizedPrompt(e.target.value)}
+          value={translatedPrompt}
+          readOnly
         />
-        <ActionBtn
-          btn="btn-white prompt-text-btn"
-          onClick={(e) => onAdd(e, getHistory())}
-          link="https://techiemationtranslator.azurewebsites.net/"
-        >
+        <ActionBtn btn="btn-white prompt-text-btn" onClick={handleOnTranslate}>
           <MdOutlineTranslate /> Translate
         </ActionBtn>
       </form>
