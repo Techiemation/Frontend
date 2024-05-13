@@ -2,8 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
-import { MdOutlineSummarize } from "react-icons/md";
-import { MdOutlineTranslate } from "react-icons/md";
+// import { MdOutlineSummarize } from "react-icons/md";
+// import { MdOutlineTranslate } from "react-icons/md";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
 import { BiSolidArrowToLeft, BiSolidArrowFromLeft } from "react-icons/bi";
 import { PiTextTBold } from "react-icons/pi";
@@ -13,7 +13,7 @@ import { IoLinkSharp } from "react-icons/io5";
 // import { FaLink } from "react-icons/fa";
 
 import ActionBtn from "../components/ActionBtn";
-
+import PromptBox from "../components/PromptBox";
 import Logo from "../components/Logo";
 //import { render } from "@testing-library/react";
 
@@ -101,43 +101,17 @@ export default function Prompt() {
         />
         <div className="nav-section">
           <Logo logo={whiteLogo} />
-          <div className="diff-btn">
-            <div
-              onClick={(e) => handleChangeMethod("Text")}
-              className={`btn ${method === "Text" && "active"}`}
-            >
-              {/* <PiTextTBold /> */}
-              {/* <PiTextT /> */}
-              <PiTextTBold className="icon" />
-              <span className="btn-text">Text</span>
-            </div>
-            <div
-              onClick={(e) => handleChangeMethod("Link")}
-              className={`btn ${method === "Link" && "active"}`}
-            >
-              {/* <IoLinkSharp />
-              Link */}
-              <IoLinkSharp className="icon" />
-              <span className="btn-text">Link</span>
-            </div>
-          </div>
+
           <div className="profile">
             <p>B</p>
           </div>
         </div>
-        {method === "Text" ? (
-          <TextPrompt
-            language={language}
-            selectLanguage={handleLanguageChange}
-            onAdd={handleOnAdd}
-          />
-        ) : (
-          <LinkPrompt
-            language={language}
-            selectLanguage={handleLanguageChange}
-            onAdd={handleOnAdd}
-          />
-        )}
+
+        <PromptBox
+          language={language}
+          selectLanguage={handleLanguageChange}
+          onAdd={handleOnAdd}
+        />
       </div>
     </div>
   );
@@ -203,113 +177,6 @@ function LinkPrompt({ language, selectLanguage, onAdd }) {
       <ActionBtn btn={"btn-white prompt-link-btn"} onClick={fetchData}>
         <MdOutlineContentPasteSearch /> <span className="btn-text">Search</span>
       </ActionBtn>
-    </div>
-  );
-}
-
-function TextPrompt({ language, selectLanguage, onAdd }) {
-  const [userPrompt, setUserPrompt] = useState("");
-  let summarizedPrompt;
-  const [translatedPrompt, setTranslatedPrompt] = useState("");
-
-  function getHistory() {
-    return {
-      dateTime: Date(),
-      title: userPrompt.split(" ").splice(0, 2).join(" "),
-      method: "Text",
-      prompt: userPrompt,
-      summarizeText: summarizedPrompt,
-      translateText: translatedPrompt,
-    };
-  }
-
-  const summarizeText = () => {
-    axios
-      .post("http://127.0.0.1:5000/summarize", {
-        text: userPrompt,
-      })
-      .then((response) => {
-        console.log(response.data);
-        summarizedPrompt = response.data["summarized_text"];
-        setUserPrompt(summarizedPrompt);
-      })
-      .catch((error) => {
-        console.error("Error Summarizing Text:", error);
-      });
-  };
-
-  const translateText = () => {
-    axios
-      .post("http://127.0.0.1:5000/translator", {
-        language: language,
-        text: userPrompt,
-      })
-      .then((response) => {
-        console.log(response.data);
-        setTranslatedPrompt(response.data["translated_text"]);
-      })
-      .catch((error) => {
-        console.error("Error Translating Text:", error);
-      });
-  };
-
-  function handleOnSummarize(e) {
-    console.log("Summarize function triggered");
-    if (userPrompt === "") {
-      alert("Error! Please Enter Text to Summarize.");
-      return;
-    } else {
-      onAdd(e, getHistory());
-      summarizeText();
-    }
-  }
-
-  function handleOnTranslate() {
-    console.log("Translate function triggered");
-    if (userPrompt === "") {
-      alert("Error! Please Enter Text to Translated.");
-      return;
-    } else {
-      translateText();
-    }
-  }
-
-  return (
-    <div className="prompt-text">
-      <form className="text-prompt">
-        <textarea
-          name="text-input"
-          placeholder="Enter Text For Summarization"
-          value={userPrompt}
-          onChange={(e) => setUserPrompt(e.target.value)}
-        />
-        <ActionBtn btn="btn-white prompt-text-btn" onClick={handleOnSummarize}>
-          <MdOutlineSummarize />
-          Summarize
-        </ActionBtn>
-      </form>
-
-      <form className="text-prompt">
-        <select
-          name="language-input"
-          className="language-selector"
-          value={language}
-          onChange={(e) => selectLanguage(e.target.value)}
-        >
-          <option value={"en"}>English</option>
-          <option value={"ur"}>Urdu</option>
-          <option value={"sd"}>Sindhi</option>
-        </select>
-        <textarea
-          name="text-output"
-          placeholder="Your Text's Summarization"
-          value={translatedPrompt}
-          readOnly
-        />
-        <ActionBtn btn="btn-white prompt-text-btn" onClick={handleOnTranslate}>
-          <MdOutlineTranslate /> Translate
-        </ActionBtn>
-      </form>
     </div>
   );
 }
