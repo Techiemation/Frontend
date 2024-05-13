@@ -9,7 +9,6 @@ export default function PromptBox({ language, selectLanguage, onAdd }) {
   const [userPrompt, setUserPrompt] = useState("");
   const [translatedPrompt, setTranslatedPrompt] = useState("");
   const [link, setLink] = useState("");
-  const [result, setResult] = useState("");
   let summarizedPrompt;
 
   function getHistory() {

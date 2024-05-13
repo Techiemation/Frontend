@@ -1,21 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
-// import { MdOutlineSummarize } from "react-icons/md";
-// import { MdOutlineTranslate } from "react-icons/md";
-import { MdOutlineContentPasteSearch } from "react-icons/md";
 import { BiSolidArrowToLeft, BiSolidArrowFromLeft } from "react-icons/bi";
-import { PiTextTBold } from "react-icons/pi";
-// import { PiTextT } from "react-icons/pi";
-// import { MdLink } from "react-icons/md";
-import { IoLinkSharp } from "react-icons/io5";
-// import { FaLink } from "react-icons/fa";
 
-import ActionBtn from "../components/ActionBtn";
 import PromptBox from "../components/PromptBox";
 import Logo from "../components/Logo";
-//import { render } from "@testing-library/react";
 
 export default function Prompt() {
   const initialHistoryList = [
@@ -113,70 +102,6 @@ export default function Prompt() {
           onAdd={handleOnAdd}
         />
       </div>
-    </div>
-  );
-}
-
-function LinkPrompt({ language, selectLanguage, onAdd }) {
-  // function renderResult(content) {
-  //   if (!content) return "";
-  //   return Object.entries(content)
-  //     .map(([heading, text]) => `${heading}\n${text}\n`)
-  //     .join("\n");
-  // }
-
-  const [link, setLink] = useState("");
-  const [result, setResult] = useState("");
-
-  const fetchData = () => {
-    // Make sure the link is not empty before proceeding
-    if (link.trim() === "") {
-      alert("Please enter a valid link.");
-      return;
-    }
-
-    // Make a GET request to your Flask backend to fetch data from the link
-    axios
-      .get(`http://127.0.0.1:5000/api/scrape?url=${encodeURIComponent(link)}`)
-      .then((response) => {
-        // Update the result state with the fetched data
-        console.log(response.data);
-        setResult(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        alert("An error occurred while fetching data.");
-      });
-  };
-
-  return (
-    <div className="prompt-link">
-      <select
-        name="language-input"
-        className="language-selector"
-        value={language}
-        onChange={(e) => selectLanguage(e.target.value)}
-      >
-        <option value={"en"}>English</option>
-        <option value={"ur"}>Urdu</option>
-        <option value={"sd"}>Sindhi</option>
-      </select>
-      <textarea
-        className="link-result"
-        value={result}
-        onChange={(e) => setResult(e.target.value)}
-        placeholder="Summarization result"
-        readOnly
-      />
-      <input
-        className="link"
-        placeholder="https://www.google.com/"
-        value={link}
-        onChange={(e) => setLink(e.target.value)}
-      />
-      <ActionBtn btn={"btn-white prompt-link-btn"} onClick={fetchData}>
-        <MdOutlineContentPasteSearch /> <span className="btn-text">Search</span>
-      </ActionBtn>
     </div>
   );
 }
