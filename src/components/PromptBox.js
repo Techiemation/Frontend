@@ -16,8 +16,9 @@ export default function PromptBox({
   current,
   translatedPrompt,
   setTranslatedPrompt,
+  link,
+  setLink,
 }) {
-  const [link, setLink] = useState("");
   let summarizedPrompt;
 
   function getHistory() {
@@ -150,7 +151,7 @@ export default function PromptBox({
       <form className="search-box">
         <input
           className="search-box-input"
-          placeholder="https://www.google.com/"
+          placeholder="https://developer.mozilla.org/"
           value={link}
           onChange={(e) => setLink(e.target.value)}
         />
@@ -159,18 +160,6 @@ export default function PromptBox({
           <span className="btn-text">Fetch</span>
         </ActionBtn>
       </form>
-      {/* <form className="search-box">
-        <input
-          className="search-box-input"
-          placeholder="https://www.google.com/"
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
-        />
-        <ActionBtn btn={"prompt-search-btn"} onClick={fetchData}>
-          <MdOutlineContentPasteSearch />{" "}
-          <span className="btn-text">Fetch</span>
-        </ActionBtn>
-      </form> */}
     </div>
   );
 }

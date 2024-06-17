@@ -47,9 +47,6 @@ html {
   height: 4.5rem;
 }
 
-/* .Links {
-} */
-
 .list {
   list-style: none;
   font-size: 1.8rem;
@@ -765,8 +762,6 @@ form .btn-white {
 .sidebar-open,
 .sidebar-close {
   font-size: 3rem;
-  /* border: var(--tint-color1) solid 0.2rem; */
-  border-radius: 0.4rem;
   margin: 0.4rem;
   color: var(--tint-color1);
   opacity: 0.75;
@@ -781,12 +776,15 @@ form .btn-white {
   left: 0;
   display: block;
 }
-
 .icon-bar {
   width: 100%;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+.sidebar-open-new {
+  top: 3.2rem;
 }
 
 .prompt {
@@ -1050,9 +1048,14 @@ form .btn-white {
     position: fixed;
   } */
 
+  .sidebar-open-new {
+    top: 0;
+    left: 3.2rem;
+  }
+
   .nav-section {
     padding: 0 1.4rem;
-    margin-top: 1.6rem;
+    margin-top: 1.8rem;
   }
 
   .btn-text {
@@ -1070,6 +1073,11 @@ form .btn-white {
     grid-template-columns: 1fr;
     height: calc(100% - 12rem);
   }
+
+  .prompt-text textarea {
+    height: 50vh;
+  }
+
   .prompt-link {
     height: calc(100% - 12rem);
   }
@@ -1184,6 +1192,7 @@ form .btn-white {
   display: flex;
   flex-direction: column;
   /* gap: 0.8rem; */
+  margin-top: 1rem;
   padding: 1rem 20% 0 20%;
   align-self: end;
   justify-self: center;

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
 import { IoChevronBack } from "react-icons/io5";
 import { IoChevronForward } from "react-icons/io5";
+import { LuPlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 import PromptBox from "../components/PromptBox";
@@ -48,6 +48,9 @@ export default function Prompt() {
   const [language, setLanguage] = useState("en");
   const [historyList, setHistoryList] = useState(initialHistoryList);
   const [current, setCurrent] = useState(null);
+  const [link, setLink] = useState("");
+  const [sideBar, setSideBar] = useState(true);
+  const historyBar = sideBar ? "" : "history-hide";
 
   // function handleChangeMethod(input) {
   //   setMethod(input === method ? method : input);
@@ -90,8 +93,12 @@ export default function Prompt() {
     setCurrent(newCurrent);
   }
 
-  const [sideBar, setSideBar] = useState(true);
-  const historyBar = sideBar ? "" : "history-hide";
+  function handleNewPrompt() {
+    setCurrent(null);
+    setUserPrompt("");
+    setTranslatedPrompt("");
+    setLink("");
+  }
 
   return (
     <div className="prompt">
@@ -101,6 +108,7 @@ export default function Prompt() {
             className="sidebar-close"
             onClick={() => setSideBar(!sideBar)}
           />
+          <LuPlus className="sidebar-close" onClick={() => handleNewPrompt()} />
         </div>
         <h1 className="history-heading">history</h1>
         <div className="history-boxes">
@@ -119,6 +127,11 @@ export default function Prompt() {
           className="sidebar-open"
           onClick={() => setSideBar(!sideBar)}
         />
+        <LuPlus
+          className="sidebar-open sidebar-open-new"
+          onClick={() => handleNewPrompt()}
+        />
+
         <div className="nav-section">
           <Logo logo={whiteLogo} />
 
@@ -137,6 +150,8 @@ export default function Prompt() {
           language={language}
           selectLanguage={handleLanguageChange}
           onAdd={handleOnAdd}
+          link={link}
+          setLink={setLink}
         />
       </div>
     </div>
