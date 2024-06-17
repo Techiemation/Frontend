@@ -734,6 +734,9 @@ form .btn-white {
   .method {
     margin-bottom: 2rem;
   }
+  .history {
+    position: fixed;
+  }
 }
 
 /* ========================== Prompt ============================= */
@@ -1043,9 +1046,9 @@ form .btn-white {
 }
 
 @media (max-width: 46em) {
-  .history {
+  /* .history {
     position: fixed;
-  }
+  } */
 
   .nav-section {
     padding: 0 1.4rem;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
 import { IoChevronBack } from "react-icons/io5";
@@ -11,6 +12,7 @@ import Logo from "../components/Logo";
 export default function Prompt() {
   const initialHistoryList = [
     {
+      id: "f0e1c940-d001-47fe-914f-012846b8a8c3",
       dateTime: "29/01/2024",
       title: "React Hooks",
       method: "Text",
@@ -20,6 +22,7 @@ export default function Prompt() {
         "Pellentesque elit eget gravida cum. Malesuada fames ac turpis egestas integer eget aliquet nibh. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Orci ac auctor augue mauris augue neque gravida. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Urna duis convallis convallis tellus id",
     },
     {
+      id: "6182cc95-908c-4f78-8280-475181e1eb2e",
       dateTime: "29/01/2024",
       title: "Javascript Function",
       method: "Link",
@@ -29,6 +32,7 @@ export default function Prompt() {
         "Pellentesque elit eget gravida cum. Malesuada fames ac turpis egestas integer eget aliquet nibh. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Orci ac auctor augue mauris augue neque gravida. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Urna duis convallis convallis tellus id",
     },
     {
+      id: "c5149ee9-8f0b-498d-989e-bab3fbe673ee",
       dateTime: "29/01/2024",
       title: "Python Loops",
       method: "Text",
@@ -39,9 +43,11 @@ export default function Prompt() {
     },
   ];
 
-  // const [method, setMethod] = useState("Text");
+  const [userPrompt, setUserPrompt] = useState("");
+  const [translatedPrompt, setTranslatedPrompt] = useState("");
   const [language, setLanguage] = useState("en");
   const [historyList, setHistoryList] = useState(initialHistoryList);
+  const [current, setCurrent] = useState(null);
 
   // function handleChangeMethod(input) {
   //   setMethod(input === method ? method : input);
@@ -52,14 +58,36 @@ export default function Prompt() {
     setLanguage(lang);
   }
 
+  const handleOnUpdate = (id, newPrompt, newResult) => {
+    setHistoryList(
+      historyList.map((history) =>
+        history.id === id
+          ? { ...history, prompt: newPrompt, result: newResult }
+          : history
+      )
+    );
+    console.log(historyList);
+  };
+
   function handleOnDelete(e) {
     setHistoryList(historyList.filter((el) => el !== e));
   }
 
   function handleOnAdd(e, history) {
     e.preventDefault();
-    // console.log(history);
     setHistoryList(() => [...historyList, history]);
+    setCurrent(history.id);
+  }
+
+  function handleOnOpen(history) {
+    // e.preventDefault();
+    setUserPrompt(history.prompt);
+    setTranslatedPrompt(history.result);
+    handleCurrentChange(history.id);
+  }
+
+  function handleCurrentChange(newCurrent) {
+    setCurrent(newCurrent);
   }
 
   const [sideBar, setSideBar] = useState(true);
@@ -80,7 +108,8 @@ export default function Prompt() {
             <History
               history={history}
               onDelete={handleOnDelete}
-              key={history.dateTime + history.title}
+              onOpen={handleOnOpen}
+              key={history.id}
             />
           ))}
         </div>
@@ -98,6 +127,13 @@ export default function Prompt() {
           </div>
         </div>
         <PromptBox
+          userPrompt={userPrompt}
+          setUserPrompt={setUserPrompt}
+          translatedPrompt={translatedPrompt}
+          setTranslatedPrompt={setTranslatedPrompt}
+          current={current}
+          onCurrentChange={handleCurrentChange}
+          onUpdate={handleOnUpdate}
           language={language}
           selectLanguage={handleLanguageChange}
           onAdd={handleOnAdd}
@@ -107,9 +143,9 @@ export default function Prompt() {
   );
 }
 
-function History({ history, onDelete }) {
+function History({ history, onDelete, onOpen }) {
   return (
-    <div className="history-item">
+    <div className="history-item" onClick={() => onOpen(history)}>
       <p>{history.title}</p>
       <CgCloseO
         onClick={() => {

@@ -1,28 +1,39 @@
 import { useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import { MdOutlineSummarize } from "react-icons/md";
 import { MdOutlineTranslate } from "react-icons/md";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
 import ActionBtn from "../components/ActionBtn";
 
-export default function PromptBox({ language, selectLanguage, onAdd }) {
-  const [userPrompt, setUserPrompt] = useState("");
-  const [translatedPrompt, setTranslatedPrompt] = useState("");
+export default function PromptBox({
+  language,
+  selectLanguage,
+  onAdd,
+  onUpdate,
+  userPrompt,
+  setUserPrompt,
+  current,
+  translatedPrompt,
+  setTranslatedPrompt,
+}) {
   const [link, setLink] = useState("");
   let summarizedPrompt;
 
   function getHistory() {
+    // console.log(summarizedPrompt);
     return {
-      dateTime: Date(),
-      title: userPrompt.split(" ").splice(0, 2).join(" "),
-      method: "Text",
+      id: uuidv4(),
+      dateTime: new Date().toString(),
+      title: summarizedPrompt
+        ? summarizedPrompt.split(" ").splice(0, 2).join(" ")
+        : "User Prompt",
       prompt: userPrompt,
-      summarizeText: summarizedPrompt,
-      translateText: translatedPrompt,
+      result: summarizedPrompt,
     };
   }
 
-  const summarizeText = () => {
+  function summarizeText(e) {
     axios
       .post("http://127.0.0.1:5000/summarize", {
         text: userPrompt,
@@ -31,11 +42,18 @@ export default function PromptBox({ language, selectLanguage, onAdd }) {
         console.log(response.data);
         summarizedPrompt = response.data["summarized_text"];
         setTranslatedPrompt(summarizedPrompt);
+        console.log(current);
+        if (current === null) {
+          onAdd(e, getHistory());
+        } else {
+          onUpdate(current, userPrompt, summarizedPrompt);
+        }
+        console.log(current);
       })
       .catch((error) => {
         console.error("Error Summarizing Text:", error);
       });
-  };
+  }
 
   const translateText = () => {
     axios
@@ -58,8 +76,7 @@ export default function PromptBox({ language, selectLanguage, onAdd }) {
       alert("Error! Please Enter Text to Summarize.");
       return;
     } else {
-      onAdd(e, getHistory());
-      summarizeText();
+      summarizeText(e);
     }
   }
 
