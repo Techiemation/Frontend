@@ -1,11 +1,21 @@
-import { FaFacebook } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
 import { MdOutlinePersonAdd } from "react-icons/md";
 
+import { useState } from "react";
+import { auth, db, googleProvider } from "../firebase";
+
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+
 import loginImage from "../resourses/img/login.jpg";
 import SectionHeading from "../components/SectionHeading";
-import { useState } from "react";
+
 import ActionBtn from "../components/ActionBtn";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
@@ -24,6 +34,18 @@ export default function LoginSignUp({ form = "Login" }) {
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
+  }
+
+  async function handleGoogleSignIn() {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      console.log("User logged in with Google");
+      alert("User logged in with Google");
+      window.location.href = "/prompt";
+    } catch (error) {
+      console.log(error.message);
+      console.error("Error logging in with Google: " + error.message);
+    }
   }
 
   return (
@@ -65,13 +87,16 @@ export default function LoginSignUp({ form = "Login" }) {
                 </div>
                 {currentForm === "Login" ? <LoginForm /> : <SignUpForm />}
                 <div className="form-alt">
-                  <a href="">
+                  {/* <div>
                     <FaFacebook className="footer-icon" />
-                  </a>
+                  </div> */}
                   <span>OR</span>
-                  <a href="">
-                    <FaGoogle className="footer-icon" />
-                  </a>
+                  <div>
+                    <FaGoogle
+                      className="footer-icon"
+                      onClick={handleGoogleSignIn}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -85,19 +110,46 @@ export default function LoginSignUp({ form = "Login" }) {
 }
 
 function LoginForm() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remeberUser, setRememberUser] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("User logged in");
+      alert("User logged in");
+      window.location.href = "/prompt";
+    } catch (error) {
+      console.log(error.message);
+      alert("Error logging in: " + error.message);
+    }
+  }
+
+  async function handleForgotPassword() {
+    if (!email) {
+      alert("Please enter your email address.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent!");
+    } catch (error) {
+      console.log(error.message);
+      alert("Error sending password reset email: " + error.message);
+    }
+  }
 
   return (
     <form className="form-login">
       <div className="field">
-        <label className="field-label">Username:</label>
+        <label className="field-label">Email:</label>
         <input
           className="input-field"
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div className="field">
@@ -118,13 +170,17 @@ function LoginForm() {
             />
             <label> Remember Me</label>
           </span>
-          <a className="forgot" href="login-signup">
+          <div className="forgot" onClick={handleForgotPassword}>
             Forgot Password?
-          </a>
+          </div>
         </span>
       </div>
 
-      <ActionBtn btn={"btn-white form-box-button"} link="/login-signup">
+      <ActionBtn
+        btn={"btn-white form-box-button"}
+        // link="/login-signup"
+        onClick={handleSubmit}
+      >
         <CiLogin /> Login
       </ActionBtn>
     </form>
@@ -136,11 +192,32 @@ function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const profile = {
-  //   username: { username },
-  //   email: { email },
-  //   password: { password },
-  // };
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        return setDoc(doc(db, "users", userCredential.user.uid), {
+          username: username,
+          email: email,
+          paid: "No",
+          history: [],
+        });
+      })
+      .then(() => {
+        alert("Account created Successfully success!");
+        console.log("Account created Successfully success!");
+        window.location.href = "/login-signup";
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert("Cannot Signup " + err.message);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert("Cannot Signup " + err.message);
+      });
+  }
 
   return (
     <form className="form-login">
@@ -177,7 +254,8 @@ function SignUpForm() {
       <ActionBtn
         icon={""}
         btn={"btn-white form-box-button"}
-        link="/login-signup+"
+        // link="/login-signup+"
+        onClick={handleSubmit}
       >
         <MdOutlinePersonAdd /> Sign Up
       </ActionBtn>

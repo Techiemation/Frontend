@@ -19,8 +19,8 @@ export default function Hero() {
               effortless comprehension. Empowering global learners with
               personalized, localized educational experiences.
             </p>
-            <ActionBtn icon={""} btn={"btn-white"} link="prompt">
-              Try For Free
+            <ActionBtn icon={""} btn={"btn-white"} link="login-signup">
+              Try Now
               <FaArrowTurnDown />
             </ActionBtn>
           </div>

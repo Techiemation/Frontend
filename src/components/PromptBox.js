@@ -142,6 +142,18 @@ export default function PromptBox({ language, selectLanguage, onAdd }) {
           <span className="btn-text">Fetch</span>
         </ActionBtn>
       </form>
+      {/* <form className="search-box">
+        <input
+          className="search-box-input"
+          placeholder="https://www.google.com/"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+        />
+        <ActionBtn btn={"prompt-search-btn"} onClick={fetchData}>
+          <MdOutlineContentPasteSearch />{" "}
+          <span className="btn-text">Fetch</span>
+        </ActionBtn>
+      </form> */}
     </div>
   );
 }

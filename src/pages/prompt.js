@@ -1,7 +1,9 @@
 import { useState } from "react";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
-import { BiSolidArrowToLeft, BiSolidArrowFromLeft } from "react-icons/bi";
+import { IoChevronBack } from "react-icons/io5";
+import { IoChevronForward } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 import PromptBox from "../components/PromptBox";
 import Logo from "../components/Logo";
@@ -37,13 +39,13 @@ export default function Prompt() {
     },
   ];
 
-  const [method, setMethod] = useState("Text");
+  // const [method, setMethod] = useState("Text");
   const [language, setLanguage] = useState("en");
   const [historyList, setHistoryList] = useState(initialHistoryList);
 
-  function handleChangeMethod(input) {
-    setMethod(input === method ? method : input);
-  }
+  // function handleChangeMethod(input) {
+  //   setMethod(input === method ? method : input);
+  // }
 
   function handleLanguageChange(lang) {
     if (language === lang) return;
@@ -67,7 +69,7 @@ export default function Prompt() {
     <div className="prompt">
       <div className={`history ${historyBar}`}>
         <div className="icon-bar">
-          <BiSolidArrowToLeft
+          <IoChevronBack
             className="sidebar-close"
             onClick={() => setSideBar(!sideBar)}
           />
@@ -84,7 +86,7 @@ export default function Prompt() {
         </div>
       </div>
       <div className="prompt-container">
-        <BiSolidArrowFromLeft
+        <IoChevronForward
           className="sidebar-open"
           onClick={() => setSideBar(!sideBar)}
         />
@@ -92,10 +94,9 @@ export default function Prompt() {
           <Logo logo={whiteLogo} />
 
           <div className="profile">
-            <p>B</p>
+            <Link to={"/userProfile"}>B</Link>
           </div>
         </div>
-
         <PromptBox
           language={language}
           selectLanguage={handleLanguageChange}
