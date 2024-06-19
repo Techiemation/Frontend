@@ -8,7 +8,6 @@ const UserProfile = () => {
 
   const updateProfile = () => {
     let promptFromUser = `dreams.`;
-
     let summaryForUser = "drm.";
     const auth = getAuth();
     const user = auth.currentUser;

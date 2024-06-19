@@ -135,9 +135,9 @@ export default function Prompt() {
         <div className="nav-section">
           <Logo logo={whiteLogo} />
 
-          <div className="profile">
-            <Link to={"/userProfile"}>B</Link>
-          </div>
+          <Link className="profile" to={"/userProfile"}>
+            <p>B</p>
+          </Link>
         </div>
         <PromptBox
           userPrompt={userPrompt}

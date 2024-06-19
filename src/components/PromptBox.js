@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { db } from "../firebase";
+import { doc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { MdOutlineSummarize } from "react-icons/md";
 import { MdOutlineTranslate } from "react-icons/md";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
@@ -34,6 +37,29 @@ export default function PromptBox({
     };
   }
 
+  // const [userData, setUserData] = useState(null);
+
+  function handleOnPromptUpdate() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const updatedData = {
+        prompt: userPrompt,
+        history: summarizedPrompt,
+      };
+      updateDoc(docRef, updatedData)
+        .then(() => {
+          console.log("Profile updated successfully", updatedData);
+          alert("Profile updated successfully");
+        })
+        .catch((error) => {
+          console.log("Error updating profile:", error);
+          alert("Error updating profile: " + error.message);
+        });
+    }
+  }
+
   function summarizeText(e) {
     axios
       .post("http://127.0.0.1:5000/summarize", {
@@ -43,13 +69,13 @@ export default function PromptBox({
         console.log(response.data);
         summarizedPrompt = response.data["summarized_text"];
         setTranslatedPrompt(summarizedPrompt);
-        console.log(current);
+
         if (current === null) {
           onAdd(e, getHistory());
         } else {
           onUpdate(current, userPrompt, summarizedPrompt);
         }
-        console.log(current);
+        handleOnPromptUpdate();
       })
       .catch((error) => {
         console.error("Error Summarizing Text:", error);
