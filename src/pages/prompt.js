@@ -1,60 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
 import { IoChevronBack } from "react-icons/io5";
 import { IoChevronForward } from "react-icons/io5";
 import { LuPlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { v4 as uuidv4 } from "uuid";
 
+import { db } from "../firebase";
 import PromptBox from "../components/PromptBox";
 import Logo from "../components/Logo";
 
 export default function Prompt() {
-  const initialHistoryList = [
-    {
-      id: "f0e1c940-d001-47fe-914f-012846b8a8c3",
-      dateTime: "29/01/2024",
-      title: "React Hooks",
-      method: "Text",
-      prompt:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      result:
-        "Pellentesque elit eget gravida cum. Malesuada fames ac turpis egestas integer eget aliquet nibh. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Orci ac auctor augue mauris augue neque gravida. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Urna duis convallis convallis tellus id",
-    },
-    {
-      id: "6182cc95-908c-4f78-8280-475181e1eb2e",
-      dateTime: "29/01/2024",
-      title: "Javascript Function",
-      method: "Link",
-      prompt:
-        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
-      result:
-        "Pellentesque elit eget gravida cum. Malesuada fames ac turpis egestas integer eget aliquet nibh. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Orci ac auctor augue mauris augue neque gravida. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Urna duis convallis convallis tellus id",
-    },
-    {
-      id: "c5149ee9-8f0b-498d-989e-bab3fbe673ee",
-      dateTime: "29/01/2024",
-      title: "Python Loops",
-      method: "Text",
-      prompt:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      result:
-        "Pellentesque elit eget gravida cum. Malesuada fames ac turpis egestas integer eget aliquet nibh. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Orci ac auctor augue mauris augue neque gravida. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Urna duis convallis convallis tellus id",
-    },
-  ];
-
   const [userPrompt, setUserPrompt] = useState("");
   const [translatedPrompt, setTranslatedPrompt] = useState("");
   const [language, setLanguage] = useState("en");
-  const [historyList, setHistoryList] = useState(initialHistoryList);
+  const [historyList, setHistoryList] = useState([]);
   const [current, setCurrent] = useState(null);
   const [link, setLink] = useState("");
   const [sideBar, setSideBar] = useState(true);
   const historyBar = sideBar ? "" : "history-hide";
 
-  // function handleChangeMethod(input) {
-  //   setMethod(input === method ? method : input);
-  // }
+  useEffect(() => {
+    const fetchData = async () => {
+      const auth = getAuth();
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          console.log("User is signed in : " + user.uid);
+          const docRef = doc(db, "users", user.uid);
+          try {
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              const obj = {
+                id: uuidv4(),
+                dateTime: new Date().toString(),
+                title: data.history
+                  ? data.history.split(" ").splice(0, 2).join(" ")
+                  : "User Prompt",
+                prompt: data.prompt,
+                result: data.history,
+              };
+              if (!data.prompt) return;
+              setHistoryList([obj]);
+            } else {
+              console.log("No such document!");
+            }
+          } catch (error) {
+            console.error("Error fetching document: ", error);
+          }
+        } else {
+          console.log("No user is signed in");
+        }
+      });
+    };
+
+    fetchData();
+  }, []);
 
   function handleLanguageChange(lang) {
     if (language === lang) return;
@@ -69,11 +73,34 @@ export default function Prompt() {
           : history
       )
     );
-    console.log(historyList);
   };
 
+  function handleOnEmptyHistory() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const updatedData = {
+        prompt: "",
+        history: "",
+      };
+      updateDoc(docRef, updatedData)
+        .then(() => {
+          console.log("Profile updated successfully");
+        })
+        .catch((error) => {
+          console.log("Error updating profile:", error);
+          // alert("Error updating profile: " + error.message);
+        });
+    }
+  }
+
   function handleOnDelete(e) {
+    if (e.id === current) handleNewPrompt();
     setHistoryList(historyList.filter((el) => el !== e));
+    if (historyList.length <= 1) {
+      handleOnEmptyHistory();
+    }
   }
 
   function handleOnAdd(e, history) {
@@ -160,9 +187,10 @@ export default function Prompt() {
 
 function History({ history, onDelete, onOpen }) {
   return (
-    <div className="history-item" onClick={() => onOpen(history)}>
-      <p>{history.title}</p>
+    <div className="history-item">
+      <p onClick={() => onOpen(history)}>{history.title}</p>
       <CgCloseO
+        className="history-item-close"
         onClick={() => {
           onDelete(history);
         }}

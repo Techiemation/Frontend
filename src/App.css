@@ -748,7 +748,7 @@ form .btn-white {
   /* position: relative; */
   background-color: var(--light-dark-color);
   width: 28rem;
-  height: 100vh;
+  height: auto;
   overflow: scroll;
   z-index: 2;
   transition: transform 0.3s ease;
@@ -855,7 +855,7 @@ form .btn-white {
 .history-item {
   color: var(--tint-color);
   font-size: 1.8rem;
-  padding: 1.2rem 1rem;
+  /* padding: 1.2rem 1rem; */
   /* margin: 0 1.8rem 1.4rem 1.8rem; */
 
   display: flex;
@@ -870,7 +870,15 @@ form .btn-white {
   color: var(--white--color);
 }
 .history-item p {
+  padding: 1.2rem 1rem;
+  /* margin: 1.2rem 1rem; */
+  width: 100%;
   overflow: hidden;
+}
+.history-item-close {
+  width: 2rem;
+  margin-right: 1rem;
+  /* padding-right: 1rem; */
 }
 
 .prompt-container {
@@ -1208,4 +1216,9 @@ form .btn-white {
   padding: 0.4rem;
   z-index: 0;
   background-color: var(--main-color);
+}
+
+/* ==================== User Profile ========================*/
+.user-profile {
+  font-size: 1.6rem;
 }

@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
-import { doc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { MdOutlineSummarize } from "react-icons/md";
 import { MdOutlineTranslate } from "react-icons/md";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
@@ -50,12 +49,11 @@ export default function PromptBox({
       };
       updateDoc(docRef, updatedData)
         .then(() => {
-          console.log("Profile updated successfully", updatedData);
-          alert("Profile updated successfully");
+          console.log("Profile updated successfully");
         })
         .catch((error) => {
           console.log("Error updating profile:", error);
-          alert("Error updating profile: " + error.message);
+          // alert("Error updating profile: " + error.message);
         });
     }
   }

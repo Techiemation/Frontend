@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { doc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   const updateProfile = () => {
     let promptFromUser = `dreams.`;
@@ -37,7 +39,7 @@ const UserProfile = () => {
         const docRef = doc(db, "users", user.uid);
 
         onSnapshot(docRef, (doc) => {
-          console.log("Current data: ", doc.data());
+          // console.log("Current data: ", doc.data());
           setUserData(doc.data());
         });
       } else {
@@ -51,7 +53,7 @@ const UserProfile = () => {
     signOut(auth)
       .then(() => {
         console.log("User signed out");
-        window.location.href = "/login-signup";
+        navigate("/login-signup");
       })
       .catch((error) => {
         console.log(error);
@@ -60,14 +62,30 @@ const UserProfile = () => {
 
   return (
     <div>
-      <h2>User Profile</h2>
+      <h1>User Profile</h1>
       {userData && (
         <div>
-          <p>Username: {userData.username}</p>
-          <p>Email: {userData.email}</p>
-          <p>Subscribed: {userData.paid}</p>
-          <p>Prompt History: {userData.prompt}</p>
-          <p>Summary History: {userData.history}</p>
+          <br />
+          <p className="user-profile">
+            <b>Username:</b> {userData.username}
+          </p>
+          <br />
+          <p className="user-profile">
+            <b>Email:</b> {userData.email}
+          </p>
+          <br />
+          <p className="user-profile">
+            <b>Subscribed:</b> {userData.paid}
+          </p>
+          <br />
+          <p className="user-profile">
+            <b>Prompt History:</b> {userData.prompt}
+          </p>
+          <br />
+          <p className="user-profile">
+            <b>Summary History:</b> {userData.history}
+          </p>
+          <br />
         </div>
       )}
       <button onClick={updateProfile}>Update Profile</button>

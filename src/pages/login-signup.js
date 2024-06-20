@@ -4,6 +4,7 @@ import { MdOutlinePersonAdd } from "react-icons/md";
 
 import { useState } from "react";
 import { auth, db, googleProvider } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 import {
   signInWithEmailAndPassword,
@@ -22,9 +23,9 @@ import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
 
 export default function LoginSignUp({ form = "Login" }) {
-  console.log(form);
   const [currentForm, setInputForm] = useState(form);
   const [mobileNavbar, setMobileNavbar] = useState(false);
+  const navigate = useNavigate();
 
   function handleChangeForm(e) {
     setInputForm(
@@ -38,13 +39,29 @@ export default function LoginSignUp({ form = "Login" }) {
 
   async function handleGoogleSignIn() {
     try {
-      await signInWithPopup(auth, googleProvider);
-      console.log("User logged in with Google");
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      // Save user info to Firestore
+      const userDoc = doc(db, "users", user.uid);
+      await setDoc(
+        userDoc,
+        {
+          username: user.displayName,
+          email: user.email,
+          paid: "No",
+          prompt: "No prompt yet", // new object to save prompt message
+          history: "No history yet", // new object to save summarized history
+        },
+        { merge: true }
+      ); // merge: true to avoid overwriting existing data
+
+      console.log("User logged in with Google:", user);
       alert("User logged in with Google");
-      window.location.href = "/prompt";
+      navigate("/prompt");
     } catch (error) {
-      console.log(error.message);
-      console.error("Error logging in with Google: " + error.message);
+      console.log("Error signing in with Google:", error.message);
+      // alert("Error signing in with Google: " + error.message);
     }
   }
 
@@ -85,7 +102,11 @@ export default function LoginSignUp({ form = "Login" }) {
                     Sign Up
                   </div>
                 </div>
-                {currentForm === "Login" ? <LoginForm /> : <SignUpForm />}
+                {currentForm === "Login" ? (
+                  <LoginForm navigate={navigate} />
+                ) : (
+                  <SignUpForm navigate={navigate} />
+                )}
                 <div className="form-alt">
                   {/* <div>
                     <FaFacebook className="footer-icon" />
@@ -109,7 +130,7 @@ export default function LoginSignUp({ form = "Login" }) {
   );
 }
 
-function LoginForm() {
+function LoginForm({ navigate }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remeberUser, setRememberUser] = useState(false);
@@ -120,7 +141,7 @@ function LoginForm() {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in");
       alert("User logged in");
-      window.location.href = "/prompt";
+      navigate("/prompt");
     } catch (error) {
       console.log(error.message);
       alert("Error logging in: " + error.message);
@@ -187,7 +208,7 @@ function LoginForm() {
   );
 }
 
-function SignUpForm() {
+function SignUpForm({ navigate }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -201,7 +222,8 @@ function SignUpForm() {
           username: username,
           email: email,
           paid: "No",
-          history: [],
+          prompt: "No prompt yet", // new object to save prompt message
+          history: "No history yet", // new object to save summarized history
         });
       })
       .then(() => {
