@@ -60,7 +60,7 @@ export default function PromptBox({
 
   function summarizeText(e) {
     axios
-      .post("http://127.0.0.1:5000/summarize", {
+      .post("https://techiemation-backend.azurewebsites.net/summarize", {
         text: userPrompt,
       })
       .then((response) => {
@@ -82,7 +82,7 @@ export default function PromptBox({
 
   const translateText = () => {
     axios
-      .post("http://127.0.0.1:5000/translator", {
+      .post("https://techiemation-backend.azurewebsites.net/translator", {
         language: language,
         text: translatedPrompt || userPrompt,
       })
@@ -124,7 +124,7 @@ export default function PromptBox({
 
     // Make a GET request to your Flask backend to fetch data from the link
     axios
-      .get(`http://127.0.0.1:5000/api/scrape?url=${encodeURIComponent(link)}`)
+      .get(`https://techiemation-backend.azurewebsites.net/api/scrape?url=${encodeURIComponent(link)}`)
       .then((response) => {
         // Update the result state with the fetched data
         console.log(response.data);
