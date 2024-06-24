@@ -1,4 +1,4 @@
-# Deploying on Azure App Service
+# Deploying on Azure App Service with different region and windows OS
 
 # Getting Started with Create React App
 
