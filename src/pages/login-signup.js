@@ -85,11 +85,6 @@ export default function LoginSignUp({ form = "Login" }) {
     return () => unsubscribe();
   }, [navigate, login]);
 
-  // useEffect(async () => {
-  //   const response = await getRedirectResult(auth);
-  //   console.log(response);
-  // }, []);
-
   async function handleGoogleSignIn() {
     try {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -125,34 +120,6 @@ export default function LoginSignUp({ form = "Login" }) {
       // alert("Error signing in with Google: " + error.message);
     }
   }
-
-  // async function handleGoogleSignIn() {
-  //   try {
-  //     const result = await signInWithPopup(auth, googleProvider);
-  //     const user = result.user;
-
-  //     // Save user info to Firestore
-  //     const userDoc = doc(db, "users", user.uid);
-  //     await setDoc(
-  //       userDoc,
-  //       {
-  //         username: user.displayName,
-  //         email: user.email,
-  //         paid: "No",
-  //         prompt: "", // new object to save prompt message
-  //         history: "", // new object to save summarized history
-  //       },
-  //       { merge: true }
-  //     ); // merge: true to avoid overwriting existing data
-
-  //     console.log("User logged in with Google:", user);
-  //     alert("User logged in with Google");
-  //     navigate("/prompt");
-  //   } catch (error) {
-  //     console.log("Error signing in with Google:", error.message);
-  //     // alert("Error signing in with Google: " + error.message);
-  //   }
-  // }
 
   return (
     <>
@@ -194,7 +161,7 @@ export default function LoginSignUp({ form = "Login" }) {
                 {currentForm === "Login" ? (
                   <LoginForm navigate={navigate} login={login} />
                 ) : (
-                  <SignUpForm setCurrentForm={setCurrentForm} />
+                  <SignUpForm setCurrentForm={setCurrentForm} login={login} />
                 )}
                 <div className="form-alt">
                   {/* <div>
@@ -227,18 +194,6 @@ function LoginForm({ navigate, login }) {
   const [rememberUser, setRememberUser] = useState(
     localStorage.getItem("rememberUser") === "true"
   );
-
-  // useEffect(() => {
-  //   const rememberedEmail = localStorage.getItem("email");
-  //   const rememberedPassword = localStorage.getItem("password");
-  //   const rememberedRememberUser =
-  //     localStorage.getItem("rememberUser") === "true";
-
-  //   console.log(rememberedEmail);
-  //   console.log(rememberedPassword);
-  //   console.log(localStorage.getItem("rememberUser"));
-  //   console.log(rememberedRememberUser);
-  // }, []);
 
   async function getUserData(userId) {
     const userDocRef = doc(db, "users", userId);
@@ -348,18 +303,14 @@ function LoginForm({ navigate, login }) {
         </span>
       </div>
 
-      <ActionBtn
-        btn={"btn-white form-box-button"}
-        // link="/login-signup"
-        onClick={handleSubmit}
-      >
+      <ActionBtn btn={"btn-white form-box-button"} onClick={handleSubmit}>
         <CiLogin /> Login
       </ActionBtn>
     </form>
   );
 }
 
-function SignUpForm({ setCurrentForm }) {
+function SignUpForm({ setCurrentForm, login }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -381,6 +332,7 @@ function SignUpForm({ setCurrentForm }) {
         alert("Account created Successfully success!");
         console.log("Account created Successfully success!");
         // window.location.href = "/login-signup";
+        login(username);
         setCurrentForm("Login");
       })
       .catch((err) => {
@@ -393,8 +345,15 @@ function SignUpForm({ setCurrentForm }) {
       });
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit(event);
+    }
+  };
+
   return (
-    <form className="form-login">
+    <form className="form-login" onKeyDown={handleKeyDown}>
       <div className="text-input">
         <label className="field-label">Username:</label>
         <input
@@ -428,7 +387,6 @@ function SignUpForm({ setCurrentForm }) {
       <ActionBtn
         icon={""}
         btn={"btn-white form-box-button"}
-        // link="/login-signup+"
         onClick={handleSubmit}
       >
         <MdOutlinePersonAdd /> Sign Up
