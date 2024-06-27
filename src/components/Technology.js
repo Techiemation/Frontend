@@ -2,8 +2,8 @@ import SectionHeading from "./SectionHeading";
 import TeamCard from "./TeamCard";
 
 import react from "../resourses/photo/tech/react.jpg";
-import django from "../resourses/photo/tech/django.jpg";
-import post from "../resourses/photo/tech/post.jpg";
+import fire from "../resourses/photo/tech/fire.png";
+import flask from "../resourses/photo/tech/flask.png";
 import azur from "../resourses/photo/tech/azur.jpg";
 
 export default function Technology() {
@@ -18,13 +18,13 @@ export default function Technology() {
             position={"Front-End Technology"}
           />
           <TeamCard
-            image={django}
-            name={"Django Framework"}
+            image={flask}
+            name={"Flask Framework"}
             position={"Back-End Technology"}
           />
           <TeamCard
-            image={post}
-            name={"PostgreSQL Database"}
+            image={fire}
+            name={"Firebase Database"}
             position={"Database Technology"}
           />
           <TeamCard
