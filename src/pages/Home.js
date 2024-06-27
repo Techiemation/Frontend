@@ -13,6 +13,7 @@ export default function Home() {
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
+
   return (
     <>
       <MobileNavbar

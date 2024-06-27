@@ -7,10 +7,11 @@ import { MdChecklistRtl } from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
 import { MdOutlinePersonAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { PiSignOutBold } from "react-icons/pi";
+import { FiUser } from "react-icons/fi";
 
-// import { IoMenu } from "react-icons/io5";
-
-export default function Links() {
+export default function Links({ user, onSignOut }) {
+  // const { user, logout } = useContext(UserContext);
   return (
     <div className="Links">
       <ul className="list">
@@ -35,16 +36,35 @@ export default function Links() {
             <RiContactsBook2Line /> Contact
           </Link>
         </li>
-        <li>
-          <ActionBtn btn={"btn-blue"} link="/login-signup">
-            <CiLogin /> Login
-          </ActionBtn>
-        </li>
-        <li>
-          <ActionBtn icon={""} btn={"btn-white"} link="/login-signup+">
-            <MdOutlinePersonAdd /> Sign Up
-          </ActionBtn>
-        </li>
+
+        {user ? (
+          <>
+            <li>
+              <ActionBtn btn={"btn-white"} link="/userProfile">
+                <FiUser />
+                {user}
+              </ActionBtn>
+            </li>
+            <li>
+              <ActionBtn icon={""} btn={"btn-blue"} onClick={onSignOut}>
+                <PiSignOutBold /> Sign Out
+              </ActionBtn>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <ActionBtn btn={"btn-blue"} link="/login-signup">
+                <CiLogin /> Login
+              </ActionBtn>
+            </li>
+            <li>
+              <ActionBtn icon={""} btn={"btn-white"} link="/login-signup+">
+                <MdOutlinePersonAdd /> Sign Up
+              </ActionBtn>
+            </li>
+          </>
+        )}
       </ul>
     </div>
   );

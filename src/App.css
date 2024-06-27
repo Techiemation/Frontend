@@ -540,7 +540,6 @@ html {
   width: 100%;
   padding-left: 1rem;
   margin-bottom: 2rem;
-
   font-size: 1.6rem;
 }
 
@@ -577,7 +576,7 @@ form .btn-white {
   display: block;
   font-size: 3rem;
   font-weight: 600;
-  line-height: 0;
+  line-height: 1;
 }
 
 .payment-container {
@@ -725,8 +724,8 @@ form .btn-white {
 
   .field-label-head {
     line-height: 1;
-    margin-top: 3rem;
-    margin-bottom: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
   }
   .method {
     margin-bottom: 2rem;
@@ -907,12 +906,32 @@ form .btn-white {
 
 .profile {
   font-size: 2.5rem;
-  color: var(--light-dark-color);
+  text-align: center;
+  color: var(--main-color);
   text-decoration: none;
   background-color: var(--white--color);
+  text-transform: uppercase;
+  width: 5rem;
+  height: 5rem;
   padding: 1rem 1.5rem;
   border-radius: 100rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.loading-dot {
+  font-size: 24px;
+  animation: blink 1s infinite;
 }
 
 .diff-btn {

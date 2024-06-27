@@ -2,17 +2,20 @@ import { FaGoogle } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
 import { MdOutlinePersonAdd } from "react-icons/md";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db, googleProvider } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  getRedirectResult,
+  onAuthStateChanged,
 } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 
 import loginImage from "../resourses/img/login.jpg";
 import SectionHeading from "../components/SectionHeading";
@@ -21,14 +24,17 @@ import ActionBtn from "../components/ActionBtn";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
 
 export default function LoginSignUp({ form = "Login" }) {
-  const [currentForm, setInputForm] = useState(form);
+  const { login } = useContext(UserContext);
+  const [currentForm, setCurrentForm] = useState(form);
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const navigate = useNavigate();
 
   function handleChangeForm(e) {
-    setInputForm(
+    setCurrentForm(
       e.target.innerText === currentForm ? currentForm : e.target.innerText
     );
   }
@@ -37,33 +43,116 @@ export default function LoginSignUp({ form = "Login" }) {
     setMobileNavbar(!mobileNavbar);
   }
 
+  useEffect(() => {
+    const handleAuthStateChanged = async (user) => {
+      if (user) {
+        try {
+          const result = await getRedirectResult(auth);
+          console.log(result);
+          if (result) {
+            const user = result.user;
+
+            // Save user info to Firestore
+            const userDoc = doc(db, "users", user.uid);
+            await setDoc(
+              userDoc,
+              {
+                username: user.displayName,
+                email: user.email,
+                paid: "No",
+                prompt: "",
+                history: "",
+              },
+              { merge: true }
+            ); // merge: true to avoid overwriting existing data
+
+            login(user.displayName);
+            console.log("User logged in with Google:", user);
+            // alert("User logged in with Google");
+            navigate("/prompt");
+          } else {
+            // Redirect if user is already signed in but no redirect result is available
+            navigate("/prompt");
+          }
+        } catch (error) {
+          console.log("Error handling redirect result:", error.message);
+          alert("Error handling redirect result: " + error.message);
+        }
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, handleAuthStateChanged);
+    return () => unsubscribe();
+  }, [navigate, login]);
+
+  // useEffect(async () => {
+  //   const response = await getRedirectResult(auth);
+  //   console.log(response);
+  // }, []);
+
   async function handleGoogleSignIn() {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      // Save user info to Firestore
-      const userDoc = doc(db, "users", user.uid);
-      await setDoc(
-        userDoc,
-        {
-          username: user.displayName,
-          email: user.email,
-          paid: "No",
-          prompt: "No prompt yet", // new object to save prompt message
-          history: "No history yet", // new object to save summarized history
-        },
-        { merge: true }
-      ); // merge: true to avoid overwriting existing data
+      if (isMobile) {
+        await signInWithRedirect(auth, googleProvider);
+      } else {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
 
-      console.log("User logged in with Google:", user);
-      alert("User logged in with Google");
-      navigate("/prompt");
+        login(user.displayName);
+
+        // Save user info to Firestore
+        const userDoc = doc(db, "users", user.uid);
+        await setDoc(
+          userDoc,
+          {
+            username: user.displayName,
+            email: user.email,
+            paid: "No",
+            prompt: "", // new object to save prompt message
+            history: "", // new object to save summarized history
+          },
+          { merge: true }
+        ); // merge: true to avoid overwriting existing data
+
+        console.log("User logged in with Google:", user);
+        // alert("User logged in with Google");
+        navigate("/prompt");
+      }
     } catch (error) {
       console.log("Error signing in with Google:", error.message);
       // alert("Error signing in with Google: " + error.message);
     }
   }
+
+  // async function handleGoogleSignIn() {
+  //   try {
+  //     const result = await signInWithPopup(auth, googleProvider);
+  //     const user = result.user;
+
+  //     // Save user info to Firestore
+  //     const userDoc = doc(db, "users", user.uid);
+  //     await setDoc(
+  //       userDoc,
+  //       {
+  //         username: user.displayName,
+  //         email: user.email,
+  //         paid: "No",
+  //         prompt: "", // new object to save prompt message
+  //         history: "", // new object to save summarized history
+  //       },
+  //       { merge: true }
+  //     ); // merge: true to avoid overwriting existing data
+
+  //     console.log("User logged in with Google:", user);
+  //     alert("User logged in with Google");
+  //     navigate("/prompt");
+  //   } catch (error) {
+  //     console.log("Error signing in with Google:", error.message);
+  //     // alert("Error signing in with Google: " + error.message);
+  //   }
+  // }
 
   return (
     <>
@@ -103,9 +192,9 @@ export default function LoginSignUp({ form = "Login" }) {
                   </div>
                 </div>
                 {currentForm === "Login" ? (
-                  <LoginForm navigate={navigate} />
+                  <LoginForm navigate={navigate} login={login} />
                 ) : (
-                  <SignUpForm navigate={navigate} />
+                  <SignUpForm setCurrentForm={setCurrentForm} />
                 )}
                 <div className="form-alt">
                   {/* <div>
@@ -130,23 +219,85 @@ export default function LoginSignUp({ form = "Login" }) {
   );
 }
 
-function LoginForm({ navigate }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [remeberUser, setRememberUser] = useState(false);
+function LoginForm({ navigate, login }) {
+  const [email, setEmail] = useState(localStorage.getItem("email") ?? "");
+  const [password, setPassword] = useState(
+    localStorage.getItem("password") ?? ""
+  );
+  const [rememberUser, setRememberUser] = useState(
+    localStorage.getItem("rememberUser") === "true"
+  );
+
+  // useEffect(() => {
+  //   const rememberedEmail = localStorage.getItem("email");
+  //   const rememberedPassword = localStorage.getItem("password");
+  //   const rememberedRememberUser =
+  //     localStorage.getItem("rememberUser") === "true";
+
+  //   console.log(rememberedEmail);
+  //   console.log(rememberedPassword);
+  //   console.log(localStorage.getItem("rememberUser"));
+  //   console.log(rememberedRememberUser);
+  // }, []);
+
+  async function getUserData(userId) {
+    const userDocRef = doc(db, "users", userId);
+
+    try {
+      const docSnapshot = await getDoc(userDocRef);
+      if (docSnapshot.exists()) {
+        return docSnapshot.data();
+      } else {
+        console.log("No such document!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+      throw error;
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      const data = await getUserData(user.uid);
+      login(data.username);
+      console.log("name is ", data.username);
+
+      // await signInWithEmailAndPassword(auth, email, password);
+
       console.log("User logged in");
-      alert("User logged in");
+      if (rememberUser) {
+        localStorage.setItem("email", email);
+        localStorage.setItem("password", password);
+        localStorage.setItem("rememberUser", rememberUser);
+      } else {
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+        localStorage.removeItem("rememberUser");
+      }
+
+      // alert("User logged in");
       navigate("/prompt");
     } catch (error) {
       console.log(error.message);
       alert("Error logging in: " + error.message);
     }
   }
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent the default form submit action
+      handleSubmit(event);
+    }
+  };
 
   async function handleForgotPassword() {
     if (!email) {
@@ -163,7 +314,7 @@ function LoginForm({ navigate }) {
   }
 
   return (
-    <form className="form-login">
+    <form className="form-login" onKeyDown={handleKeyDown}>
       <div className="field">
         <label className="field-label">Email:</label>
         <input
@@ -186,7 +337,7 @@ function LoginForm({ navigate }) {
           <span>
             <input
               type="checkbox"
-              checked={remeberUser}
+              checked={rememberUser}
               onChange={(e) => setRememberUser(e.target.checked)}
             />
             <label> Remember Me</label>
@@ -208,7 +359,7 @@ function LoginForm({ navigate }) {
   );
 }
 
-function SignUpForm({ navigate }) {
+function SignUpForm({ setCurrentForm }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -222,14 +373,15 @@ function SignUpForm({ navigate }) {
           username: username,
           email: email,
           paid: "No",
-          prompt: "No prompt yet", // new object to save prompt message
-          history: "No history yet", // new object to save summarized history
+          prompt: "", // new object to save prompt message
+          history: "", // new object to save summarized history
         });
       })
       .then(() => {
         alert("Account created Successfully success!");
         console.log("Account created Successfully success!");
-        window.location.href = "/login-signup";
+        // window.location.href = "/login-signup";
+        setCurrentForm("Login");
       })
       .catch((err) => {
         console.log(err.message);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";
 import { IoChevronBack } from "react-icons/io5";
@@ -12,8 +12,10 @@ import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
 import PromptBox from "../components/PromptBox";
 import Logo from "../components/Logo";
+import { UserContext } from "../UserContext";
 
 export default function Prompt() {
+  const { user } = useContext(UserContext);
   const [userPrompt, setUserPrompt] = useState("");
   const [translatedPrompt, setTranslatedPrompt] = useState("");
   const [language, setLanguage] = useState("en");
@@ -34,6 +36,7 @@ export default function Prompt() {
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               const data = docSnap.data();
+
               const obj = {
                 id: uuidv4(),
                 dateTime: new Date().toString(),
@@ -58,7 +61,8 @@ export default function Prompt() {
     };
 
     fetchData();
-  }, []);
+    console.log("user is ", user);
+  }, [user]);
 
   function handleLanguageChange(lang) {
     if (language === lang) return;
@@ -163,7 +167,7 @@ export default function Prompt() {
           <Logo logo={whiteLogo} />
 
           <Link className="profile" to={"/userProfile"}>
-            <p>B</p>
+            {user ? <p>{user[0]}</p> : <div className="loading-dot">.</div>}
           </Link>
         </div>
         <PromptBox
