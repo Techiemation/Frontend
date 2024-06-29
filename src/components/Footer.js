@@ -1,11 +1,6 @@
 import { FaFacebook } from "react-icons/fa";
-// import { TiSocialFacebookCircular } from "react-icons/ti";
-
 import { FaInstagram } from "react-icons/fa6";
-// import { BsTwitterX } from "react-icons/bs";
-
-// import { FaYoutube } from "react-icons/fa";
-// import { AiOutlineYoutube } from "react-icons/ai";
+import { IoIosMail } from "react-icons/io";
 
 export default function Footer() {
   return (
@@ -17,6 +12,9 @@ export default function Footer() {
 
         <a href="https://www.instagram.com/techiemation?igsh=cGV5bG55ZjBmcGE3">
           <FaInstagram className="footer-icon" />
+        </a>
+        <a href="mailto:techiemation@gmail.com">
+          <IoIosMail className="footer-icon" />
         </a>
       </div>
       <div className="copy-right">

@@ -5,8 +5,9 @@ import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import { useForm } from "@formspree/react";
 import { FiSend } from "react-icons/fi";
+
+import { useForm } from "@formspree/react";
 
 export default function Contact() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -29,7 +30,11 @@ export default function Contact() {
           <div className="contact-container">
             <div className="contact-2-grid">
               <img src={contactImage} alt="contact" className="contact-image" />
-              <form name="contact" onSubmit={handleSubmit} action="">
+              <form
+                name="contact"
+                action="https://formspree.io/f/mqazkzlj"
+                method="POST"
+              >
                 <div className="field-container">
                   <div className="field">
                     <label htmlFor="name" className="field-label">
@@ -75,11 +80,7 @@ export default function Contact() {
                   rows="10"
                   required
                 ></textarea>
-                <ActionBtn
-                  type="submit"
-                  disabled={state.submitting}
-                  btn={"btn-white"}
-                >
+                <ActionBtn type="submit" btn={"btn-white"}>
                   Send <FiSend />
                 </ActionBtn>
               </form>

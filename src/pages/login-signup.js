@@ -44,8 +44,6 @@ export default function LoginSignUp({ form = "Login" }) {
   }
 
   useEffect(() => {
-    // initializeAuth();
-
     const handleAuthStateChanged = async (user) => {
       if (user) {
         try {
@@ -82,10 +80,31 @@ export default function LoginSignUp({ form = "Login" }) {
         }
       }
     };
-
+    // initializeAuth();
     const unsubscribe = onAuthStateChanged(auth, handleAuthStateChanged);
     return () => unsubscribe();
   }, [navigate, login]);
+
+  // This function should be called when your app initializes
+  // function initializeAuth() {
+  //   // Check for redirect result
+  //   getRedirectResult(auth)
+  //     .then((result) => {
+  //       if (result && result.user) {
+  //         handleSignInResult(result.user);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error getting redirect result:", error);
+  //     });
+
+  //   // Listen for auth state changes
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       handleSignInResult(user);
+  //     }
+  //   });
+  // }
 
   // async function handleGoogleSignIn() {
   //   try {
@@ -161,27 +180,6 @@ export default function LoginSignUp({ form = "Login" }) {
         });
     }
   }
-
-  // This function should be called when your app initializes
-  // function initializeAuth() {
-  //   // Check for redirect result
-  //   getRedirectResult(auth)
-  //     .then((result) => {
-  //       if (result && result.user) {
-  //         handleSignInResult(result.user);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error getting redirect result:", error);
-  //     });
-
-  //   // Listen for auth state changes
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       handleSignInResult(user);
-  //     }
-  //   });
-  // }
 
   async function handleSignInResult(user) {
     try {

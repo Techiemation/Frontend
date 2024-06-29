@@ -9,6 +9,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAUpaihcrnLRDbUl334VGfzgvrXEH3-_7Q",
   authDomain: "techiemation-bf6c9.firebaseapp.com",
+  // authDomain: "techiemation.netlify.app",
   projectId: "techiemation-bf6c9",
   storageBucket: "techiemation-bf6c9.appspot.com",
   messagingSenderId: "388101852073",

@@ -1,7 +1,7 @@
 import Hero from "../components/Hero";
 import Features from "../components/Features";
 import Quote from "../components/Quote";
-import Plan from "../components/Plan";
+// import Plan from "../components/Plan";
 import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
 import MobileNavbar from "../components/MobileNavbar";
@@ -25,7 +25,7 @@ export default function Home() {
         <Hero />
         <Features />
         <Quote />
-        <Plan />
+        {/* <Plan /> */}
       </main>
       <Footer />
     </>
