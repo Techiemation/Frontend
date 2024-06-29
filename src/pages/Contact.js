@@ -7,11 +7,8 @@ import Footer from "../components/Footer";
 import { useState } from "react";
 import { FiSend } from "react-icons/fi";
 
-import { useForm } from "@formspree/react";
-
 export default function Contact() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
-  const [state, handleSubmit] = useForm("mqazkzlj");
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
