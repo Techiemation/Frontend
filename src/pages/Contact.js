@@ -5,11 +5,12 @@ import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
 import { useState } from "react";
-
+import { useForm } from "@formspree/react";
 import { FiSend } from "react-icons/fi";
 
 export default function Contact() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
+  const [state, handleSubmit] = useForm("mqazkzlj");
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
@@ -28,30 +29,57 @@ export default function Contact() {
           <div className="contact-container">
             <div className="contact-2-grid">
               <img src={contactImage} alt="contact" className="contact-image" />
-              <form action="">
+              <form name="contact" onSubmit={handleSubmit} action="">
                 <div className="field-container">
                   <div className="field">
-                    <label htmlFor="" className="field-label">
-                      Name
+                    <label htmlFor="name" className="field-label">
+                      Name:
                     </label>
-                    <input type="text" name="" id="" className="input-field" />
+                    <input
+                      autoComplete="name"
+                      type="text"
+                      name=""
+                      id="name"
+                      className="input-field"
+                    />
                   </div>
                   <div className="field">
-                    <label htmlFor="" className="field-label">
-                      Last Name
+                    <label htmlFor="last-name" className="field-label">
+                      Last Name:
                     </label>
-                    <input type="text" name="" id="" className="input-field" />
+                    <input
+                      type="text"
+                      name=""
+                      id="last-name"
+                      className="input-field"
+                    />
                   </div>
                 </div>
-                <label htmlFor="" className="field-label">
-                  Last Name
+                <label htmlFor="email" className="field-label">
+                  Email:
                 </label>
-                <input type="text" name="" id="" className="input-field" />
-                <label htmlFor="" className="field-label">
-                  Message
+                <input
+                  type="email"
+                  id="email"
+                  name="Email"
+                  className="input-field"
+                  required
+                />
+                <label htmlFor="message" className="field-label">
+                  Message:
                 </label>
-                <textarea name="" id="" cols="30" rows="10"></textarea>
-                <ActionBtn icon={""} btn={"btn-white"}>
+                <textarea
+                  name=""
+                  id="message"
+                  cols="30"
+                  rows="10"
+                  required
+                ></textarea>
+                <ActionBtn
+                  type="submit"
+                  disabled={state.submitting}
+                  btn={"btn-white"}
+                >
                   Send <FiSend />
                 </ActionBtn>
               </form>

@@ -44,6 +44,8 @@ export default function LoginSignUp({ form = "Login" }) {
   }
 
   useEffect(() => {
+    // initializeAuth();
+
     const handleAuthStateChanged = async (user) => {
       if (user) {
         try {
@@ -85,39 +87,136 @@ export default function LoginSignUp({ form = "Login" }) {
     return () => unsubscribe();
   }, [navigate, login]);
 
-  async function handleGoogleSignIn() {
+  // async function handleGoogleSignIn() {
+  //   try {
+  //     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  //     let result;
+
+  //     if (!isMobile) {
+  //       // For mobile, always use redirect
+  //       await signInWithRedirect(auth, googleProvider);
+  //       // Get the result after redirect
+  //       result = await getRedirectResult(auth);
+  //     } else {
+  //       // For desktop, use popup
+  //       result = await signInWithPopup(auth, googleProvider);
+  //     }
+
+  //     if (!result) {
+  //       console.log("No result from sign-in, user might have cancelled");
+  //       return;
+  //     }
+
+  //     const user = result.user;
+  //     login(user.displayName);
+
+  //     // Check if user already exists in Firestore
+  //     const userDoc = doc(db, "users", user.uid);
+  //     const userSnapshot = await getDoc(userDoc);
+
+  //     if (userSnapshot.exists()) {
+  //       // User exists, only update necessary fields
+  //       await setDoc(
+  //         userDoc,
+  //         {
+  //           lastLogin: new Date(),
+  //         },
+  //         { merge: true }
+  //       );
+  //     } else {
+  //       // New user, create full profile
+  //       await setDoc(userDoc, {
+  //         username: user.displayName,
+  //         email: user.email,
+  //         paid: "No",
+  //         prompt: "",
+  //         history: "",
+  //         createdAt: new Date(),
+  //         lastLogin: new Date(),
+  //       });
+  //     }
+
+  //     console.log("User logged in with Google:", user);
+  //     navigate("/prompt");
+  //   } catch (error) {
+  //     console.error("Error signing in with Google:", error);
+  //     // Handle specific error cases if needed
+  //   }
+  // }
+
+  function handleGoogleSignIn() {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // For mobile, use redirect
+      signInWithRedirect(auth, googleProvider).catch((error) => {
+        console.error("Error initiating Google Sign-In redirect:", error);
+      });
+    } else {
+      // For desktop, use popup
+      signInWithPopup(auth, googleProvider)
+        .then((result) => handleSignInResult(result.user))
+        .catch((error) => {
+          console.error("Error signing in with Google:", error);
+        });
+    }
+  }
+
+  // This function should be called when your app initializes
+  // function initializeAuth() {
+  //   // Check for redirect result
+  //   getRedirectResult(auth)
+  //     .then((result) => {
+  //       if (result && result.user) {
+  //         handleSignInResult(result.user);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error getting redirect result:", error);
+  //     });
+
+  //   // Listen for auth state changes
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       handleSignInResult(user);
+  //     }
+  //   });
+  // }
+
+  async function handleSignInResult(user) {
     try {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      login(user.displayName);
 
-      if (isMobile) {
-        await signInWithRedirect(auth, googleProvider);
-      } else {
-        const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
+      // Check if user already exists in Firestore
+      const userDoc = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDoc);
 
-        login(user.displayName);
-
-        // Save user info to Firestore
-        const userDoc = doc(db, "users", user.uid);
+      if (userSnapshot.exists()) {
+        // User exists, only update necessary fields
         await setDoc(
           userDoc,
           {
-            username: user.displayName,
-            email: user.email,
-            paid: "No",
-            prompt: "", // new object to save prompt message
-            history: "", // new object to save summarized history
+            lastLogin: new Date(),
           },
           { merge: true }
-        ); // merge: true to avoid overwriting existing data
-
-        console.log("User logged in with Google:", user);
-        // alert("User logged in with Google");
-        navigate("/prompt");
+        );
+      } else {
+        // New user, create full profile
+        await setDoc(userDoc, {
+          username: user.displayName,
+          email: user.email,
+          paid: "No",
+          prompt: "",
+          history: "",
+          createdAt: new Date(),
+          lastLogin: new Date(),
+        });
       }
+
+      // console.log("User logged in with Google");
+      navigate("/prompt");
     } catch (error) {
-      console.log("Error signing in with Google:", error.message);
-      // alert("Error signing in with Google: " + error.message);
+      console.error("Error handling sign-in result:", error);
     }
   }
 
@@ -269,10 +368,14 @@ function LoginForm({ navigate, login }) {
   }
 
   return (
-    <form className="form-login" onKeyDown={handleKeyDown}>
+    <form name="login" className="form-login" onKeyDown={handleKeyDown}>
       <div className="field">
-        <label className="field-label">Email:</label>
+        <label htmlFor="email" className="field-label">
+          Email:
+        </label>
         <input
+          autoComplete="email"
+          id="email"
           className="input-field"
           type="text"
           value={email}
@@ -280,8 +383,11 @@ function LoginForm({ navigate, login }) {
         />
       </div>
       <div className="field">
-        <label className="field-label">Password:</label>
+        <label htmlFor="password" className="field-label">
+          Password:
+        </label>
         <input
+          id="password"
           className="input-field"
           type="password"
           value={password}
@@ -291,11 +397,12 @@ function LoginForm({ navigate, login }) {
         <span className="form-remeber-me">
           <span>
             <input
+              id="remember-me"
               type="checkbox"
               checked={rememberUser}
               onChange={(e) => setRememberUser(e.target.checked)}
             />
-            <label> Remember Me</label>
+            <label htmlFor="remember-me"> Remember Me</label>
           </span>
           <div className="forgot" onClick={handleForgotPassword}>
             Forgot Password?
@@ -353,10 +460,13 @@ function SignUpForm({ setCurrentForm, login }) {
   };
 
   return (
-    <form className="form-login" onKeyDown={handleKeyDown}>
+    <form name="signup" className="form-login" onKeyDown={handleKeyDown}>
       <div className="text-input">
-        <label className="field-label">Username:</label>
+        <label htmlFor="username" className="field-label">
+          Username:
+        </label>
         <input
+          id="username"
           className="input-field"
           type="text"
           value={username}
@@ -365,8 +475,11 @@ function SignUpForm({ setCurrentForm, login }) {
         />
       </div>
       <div className="text-input">
-        <label className="field-label">Email:</label>
+        <label htmlFor="signup-email" className="field-label">
+          Email:
+        </label>
         <input
+          id="signup-email"
           className="input-field"
           type="email"
           value={email}
@@ -375,8 +488,11 @@ function SignUpForm({ setCurrentForm, login }) {
         />
       </div>
       <div className="text-input">
-        <label className="field-label">Password:</label>
+        <label htmlFor="signup-password" className="field-label">
+          Password:
+        </label>
         <input
+          id="signup-password"
           className="input-field"
           type="password"
           value={password}

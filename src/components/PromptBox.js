@@ -124,7 +124,11 @@ export default function PromptBox({
 
     // Make a GET request to your Flask backend to fetch data from the link
     axios
-      .get(`https://techiemation-backend.azurewebsites.net/api/scrape?url=${encodeURIComponent(link)}`)
+      .get(
+        `https://techiemation-backend.azurewebsites.net/api/scrape?url=${encodeURIComponent(
+          link
+        )}`
+      )
       .then((response) => {
         // Update the result state with the fetched data
         console.log(response.data);
@@ -138,9 +142,9 @@ export default function PromptBox({
 
   return (
     <div className="prompt-text">
-      <form className="text-prompt">
+      <form name="input-box" className="text-prompt">
         <textarea
-          name="text-input"
+          name="user-input"
           placeholder="Enter Text For Summarization"
           value={userPrompt}
           onChange={(e) => setUserPrompt(e.target.value)}
@@ -151,7 +155,7 @@ export default function PromptBox({
         </ActionBtn>
       </form>
 
-      <form className="text-prompt">
+      <form name="result-box" className="text-prompt">
         <select
           name="language-input"
           className="language-selector"
@@ -172,9 +176,11 @@ export default function PromptBox({
           <MdOutlineTranslate /> Translate
         </ActionBtn>
       </form>
-      <form className="search-box">
+      <form name="link-form" className="search-box">
         <input
+          name="link-box"
           className="search-box-input"
+          type="url"
           placeholder="https://developer.mozilla.org/"
           value={link}
           onChange={(e) => setLink(e.target.value)}

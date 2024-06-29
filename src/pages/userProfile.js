@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import { doc, onSnapshot } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
@@ -13,7 +18,7 @@ import { UserContext } from "../UserContext";
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
-  const { logout } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [mobileNavbar, setMobileNavbar] = useState(false);
 
   const navigate = useNavigate();
@@ -26,18 +31,17 @@ const UserProfile = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("User is signed in : " + user.uid);
         const docRef = doc(db, "users", user.uid);
 
         onSnapshot(docRef, (doc) => {
           setUserData(doc.data());
         });
       } else {
-        console.log("No user is signed in");
+        console.warn("No user is signed in");
         navigate("/login-signup");
       }
     });
-  }, [navigate]);
+  }, [navigate, user]);
 
   const handleSignOut = () => {
     const auth = getAuth();
@@ -51,6 +55,21 @@ const UserProfile = () => {
         console.log(error);
       });
   };
+
+  async function handleForgotPassword() {
+    const email = userData.email;
+    if (!email) {
+      alert("Please enter your email address.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent!");
+    } catch (error) {
+      console.log(error.message);
+      alert("Error sending password reset email: " + error.message);
+    }
+  }
 
   return (
     <div>
@@ -70,10 +89,13 @@ const UserProfile = () => {
                 className="contact-image"
               />
               <div>
-                <form action="" className="form-login">
+                <form name="user-profile" action="" className="form-login">
                   <div className="text-input">
-                    <label className="field-label">Username:</label>
+                    <label htmlFor="user-username" className="field-label">
+                      Username:
+                    </label>
                     <input
+                      id="user-username"
                       className="input-field"
                       type="text"
                       value={userData ? userData.username : ""}
@@ -81,34 +103,27 @@ const UserProfile = () => {
                     />
                   </div>
                   <div className="text-input">
-                    <label className="field-label">Email:</label>
+                    <label htmlFor="user-email" className="field-label">
+                      Email:
+                    </label>
                     <input
+                      id="user-email"
                       className="input-field"
                       type="text"
                       value={userData ? userData.email : ""}
                       readOnly
                     />
                   </div>
+
                   <div className="text-input">
-                    <label className="field-label">Subscribed:</label>
-                    <input
-                      className="input-field"
-                      type="text"
-                      value={userData ? userData.paid : ""}
-                      readOnly
-                    />
+                    <ActionBtn
+                      icon={""}
+                      btn={"btn-white"}
+                      onClick={handleForgotPassword}
+                    >
+                      Change Password
+                    </ActionBtn>
                   </div>
-
-                  {/* <div className="text-input">
-                    <label className="field-label">History:</label>
-                    <textarea
-                      className="input-field history-field"
-                      type="text"
-                      value={userData ? userData.history : ""}
-                      readOnly
-                    />
-                  </div> */}
-
                   <div className="text-input">
                     <ActionBtn icon={""} btn={"btn-white"} link={"/prompt"}>
                       Prompt Page
@@ -127,37 +142,6 @@ const UserProfile = () => {
               </div>
             </div>
           </div>
-
-          {/* <h1>User Profile</h1>
-          {userData ? (
-            <div>
-              <br />
-              <p className="user-profile">
-                <b>Username:</b> {userData.username}
-              </p>
-              <br />
-              <p className="user-profile">
-                <b>Email:</b> {userData.email}
-              </p>
-              <br />
-              <p className="user-profile">
-                <b>Subscribed:</b> {userData.paid}
-              </p>
-              <br />
-              <p className="user-profile">
-                <b>Prompt History:</b> {userData.prompt}
-              </p>
-              <br />
-              <p className="user-profile">
-                <b>Summary History:</b> {userData.history}
-              </p>
-              <br />
-            </div>
-          ) : (
-            <p>Loading user data...</p>
-          )}
-          <button onClick={updateProfile}>Update Profile</button>
-          <button onClick={handleSignOut}>Sign Out</button> */}
         </div>
       </div>
       <Footer />
@@ -166,93 +150,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-// const UserProfile = () => {
-//   const [userData, setUserData] = useState(null);
-//   const navigate = useNavigate();
-
-//   const updateProfile = () => {
-//     let promptFromUser = `dreams.`;
-//     let summaryForUser = "drm.";
-//     const auth = getAuth();
-//     const user = auth.currentUser;
-//     if (user) {
-//       const docRef = doc(db, "users", user.uid);
-//       const updatedData = {
-//         prompt: promptFromUser,
-//         history: summaryForUser,
-//       };
-//       updateDoc(docRef, updatedData)
-//         .then(() => {
-//           console.log("Profile updated successfully");
-//           alert("Profile updated successfully");
-//         })
-//         .catch((error) => {
-//           console.log("Error updating profile:", error);
-//           alert("Error updating profile: " + error.message);
-//         });
-//     }
-//   };
-
-//   useEffect(() => {
-//     const auth = getAuth();
-//     onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         console.log("User is signed in : " + user.uid);
-//         const docRef = doc(db, "users", user.uid);
-
-//         onSnapshot(docRef, (doc) => {
-//           // console.log("Current data: ", doc.data());
-//           setUserData(doc.data());
-//         });
-//       } else {
-//         console.log("No user is signed in");
-//       }
-//     });
-//   }, []);
-
-//   const handleSignOut = () => {
-//     const auth = getAuth();
-//     signOut(auth)
-//       .then(() => {
-//         console.log("User signed out");
-//         navigate("/login-signup");
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   };
-
-//   return (
-//     <div>
-//       <h1>User Profile</h1>
-//       {userData && (
-//         <div>
-//           <br />
-//           <p className="user-profile">
-//             <b>Username:</b> {userData.username}
-//           </p>
-//           <br />
-//           <p className="user-profile">
-//             <b>Email:</b> {userData.email}
-//           </p>
-//           <br />
-//           <p className="user-profile">
-//             <b>Subscribed:</b> {userData.paid}
-//           </p>
-//           <br />
-//           <p className="user-profile">
-//             <b>Prompt History:</b> {userData.prompt}
-//           </p>
-//           <br />
-//           <p className="user-profile">
-//             <b>Summary History:</b> {userData.history}
-//           </p>
-//           <br />
-//         </div>
-//       )}
-//       <button onClick={updateProfile}>Update Profile</button>
-//       <button onClick={handleSignOut}>Sign Out</button>
-//     </div>
-//   );
-// };
