@@ -9,10 +9,8 @@ import { useNavigate } from "react-router-dom";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
-  getRedirectResult,
   onAuthStateChanged,
 } from "firebase/auth";
 import { setDoc, doc, getDoc } from "firebase/firestore";
@@ -47,138 +45,33 @@ export default function LoginSignUp({ form = "Login" }) {
     const handleAuthStateChanged = async (user) => {
       if (user) {
         try {
-          const result = await getRedirectResult(auth);
-          console.log(result);
-          if (result) {
-            const user = result.user;
-
-            // Save user info to Firestore
-            const userDoc = doc(db, "users", user.uid);
-            await setDoc(
-              userDoc,
-              {
-                username: user.displayName,
-                email: user.email,
-                paid: "No",
-                prompt: "",
-                history: "",
-              },
-              { merge: true }
-            ); // merge: true to avoid overwriting existing data
-
-            login(user.displayName);
-            console.log("User logged in with Google:", user);
-            // alert("User logged in with Google");
-            navigate("/prompt");
-          } else {
-            // Redirect if user is already signed in but no redirect result is available
-            navigate("/prompt");
-          }
+          navigate("/prompt");
         } catch (error) {
           console.log("Error handling redirect result:", error.message);
           alert("Error handling redirect result: " + error.message);
         }
       }
     };
-    // initializeAuth();
+
     const unsubscribe = onAuthStateChanged(auth, handleAuthStateChanged);
     return () => unsubscribe();
   }, [navigate, login]);
 
-  // This function should be called when your app initializes
-  // function initializeAuth() {
-  //   // Check for redirect result
-  //   getRedirectResult(auth)
-  //     .then((result) => {
-  //       if (result && result.user) {
-  //         handleSignInResult(result.user);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error getting redirect result:", error);
-  //     });
-
-  //   // Listen for auth state changes
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       handleSignInResult(user);
-  //     }
-  //   });
-  // }
-
-  // async function handleGoogleSignIn() {
-  //   try {
-  //     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  //     let result;
-
-  //     if (!isMobile) {
-  //       // For mobile, always use redirect
-  //       await signInWithRedirect(auth, googleProvider);
-  //       // Get the result after redirect
-  //       result = await getRedirectResult(auth);
-  //     } else {
-  //       // For desktop, use popup
-  //       result = await signInWithPopup(auth, googleProvider);
-  //     }
-
-  //     if (!result) {
-  //       console.log("No result from sign-in, user might have cancelled");
-  //       return;
-  //     }
-
-  //     const user = result.user;
-  //     login(user.displayName);
-
-  //     // Check if user already exists in Firestore
-  //     const userDoc = doc(db, "users", user.uid);
-  //     const userSnapshot = await getDoc(userDoc);
-
-  //     if (userSnapshot.exists()) {
-  //       // User exists, only update necessary fields
-  //       await setDoc(
-  //         userDoc,
-  //         {
-  //           lastLogin: new Date(),
-  //         },
-  //         { merge: true }
-  //       );
-  //     } else {
-  //       // New user, create full profile
-  //       await setDoc(userDoc, {
-  //         username: user.displayName,
-  //         email: user.email,
-  //         paid: "No",
-  //         prompt: "",
-  //         history: "",
-  //         createdAt: new Date(),
-  //         lastLogin: new Date(),
-  //       });
-  //     }
-
-  //     console.log("User logged in with Google:", user);
-  //     navigate("/prompt");
-  //   } catch (error) {
-  //     console.error("Error signing in with Google:", error);
-  //     // Handle specific error cases if needed
-  //   }
-  // }
-
-  function handleGoogleSignIn() {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      // For mobile, use redirect
-      signInWithRedirect(auth, googleProvider).catch((error) => {
-        console.error("Error initiating Google Sign-In redirect:", error);
-      });
-    } else {
-      // For desktop, use popup
-      signInWithPopup(auth, googleProvider)
-        .then((result) => handleSignInResult(result.user))
-        .catch((error) => {
-          console.error("Error signing in with Google:", error);
-        });
+  async function handleGoogleSignIn() {
+    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      // console.log(userCred);
+      handleSignInResult(result.user);
+    } catch (error) {
+      console.error("Error Signing In with Google:", error);
     }
+    // For desktop, use popup
+    // signInWithPopup(auth, googleProvider)
+    //   .then((result) => handleSignInResult(result.user))
+    //   .catch((error) => {
+    //     console.error("Error signing in with Google:", error);
+    //   });
   }
 
   async function handleSignInResult(user) {
