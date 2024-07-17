@@ -29,7 +29,7 @@ export default function Contact() {
               <img src={contactImage} alt="contact" className="contact-image" />
               <form
                 name="contact"
-                action="https://formspree.io/f/mqazkzlj"
+                action="https://formspree.io/f/xwpepypw"
                 method="POST"
               >
                 <div className="field-container">
