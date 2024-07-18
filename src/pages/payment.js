@@ -76,7 +76,11 @@ export default function Payment() {
             <div className="contact-2-grid">
               <img src={paymentImage} alt="payment" className="contact-image" />
 
-              <form action="" className="">
+              <form
+                name="plan"
+                action="https://formspree.io/f/mqazkzlj"
+                method="POST"
+              >
                 <div className="input-container">
                   <div className="field-container">
                     <div className="field">
