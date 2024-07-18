@@ -7,22 +7,59 @@ import Footer from "../components/Footer";
 import { useState } from "react";
 
 import { FiSend } from "react-icons/fi";
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { LuCheckCircle } from "react-icons/lu";
+import React from "react";
 
-export default function Payment({ plan_ = "Basic" }) {
+export default function Payment() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [company, setCompany] = useState("");
+  const [mobileNo, setMoblieNo] = useState("");
+  const [planMessage, setPlanMessage] = useState("");
 
-  const location = useLocation();
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
 
-  // Scrolls to the top of the page when location changes
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
+  const validateForm = () => {
+    const errors = {};
+    if (!firstname) errors.name = "Name is Required";
+    if (!company) {
+      errors.company = "Company is Required";
+    }
+    if (!mobileNo) {
+      errors.mobileNo = "Moblie Number is Required";
+    } else if (!/^\d{9,}$/.test(mobileNo)) {
+      errors.mobileNo = "Moblie Number should only have Numbers";
+    }
+    if (!planMessage) errors.message = "Plan Requirement is Required";
+    return errors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      console.log("Form submitted successfully.");
+
+      setFirstname("");
+      setLastname("");
+      setCompany("");
+      setMoblieNo("");
+      setPlanMessage("");
+
+      setIsPopupVisible(true);
+      setTimeout(() => {
+        setIsPopupVisible(false);
+      }, 2000);
+    } else {
+      const errorMessages = Object.values(validationErrors).join(", ");
+      alert(`Validation Errors:\n${errorMessages}`);
+    }
+  };
 
   return (
     <>
@@ -43,37 +80,43 @@ export default function Payment({ plan_ = "Basic" }) {
                 <div className="input-container">
                   <div className="field-container">
                     <div className="field">
-                      <label htmlFor="first-name" className="field-label">
+                      <label htmlFor="firstname" className="field-label">
                         First Name:
                       </label>
                       <input
                         type="text"
                         name=""
-                        id="first-name"
+                        id="firstname"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
                         className="input-field"
                       />
                     </div>
                     <div className="field">
-                      <label htmlFor="last-name" className="field-label">
+                      <label htmlFor="lastname" className="field-label">
                         Last Name:
                       </label>
                       <input
                         type="text"
                         name=""
-                        id="last-name"
+                        id="lastname"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
                         className="input-field"
                       />
                     </div>
                   </div>
                   <div className="field-container">
                     <div className="field">
-                      <label htmlFor="" className="field-label">
+                      <label htmlFor="company" className="field-label">
                         Company:
                       </label>
                       <input
                         type="text"
                         name=""
-                        id=""
+                        id="company"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
                         className="input-field"
                       />
                     </div>
@@ -85,18 +128,22 @@ export default function Payment({ plan_ = "Basic" }) {
                         type="tel"
                         name=""
                         id="mobile-no"
+                        value={mobileNo}
+                        onChange={(e) => setMoblieNo(e.target.value)}
                         className="input-field"
                       />
                     </div>
                   </div>
                   <div className="field textArea">
-                    <label htmlFor="" className="field-label">
+                    <label htmlFor="plan-message" className="field-label">
                       Base plan requirement:
                     </label>
                     <textarea
                       name=""
-                      id=""
+                      id="plan-message"
                       className=""
+                      value={planMessage}
+                      onChange={(e) => setPlanMessage(e.target.value)}
                       placeholder="Want an enterprise solution?
                       &oline;
                       Techiemation Offers end to end custom service for businesses of all sizes. Contact us today to discover how we can help achieve your goals."
@@ -104,9 +151,22 @@ export default function Payment({ plan_ = "Basic" }) {
                   </div>
                 </div>
 
-                <ActionBtn icon={""} btn={"btn-white"}>
+                <ActionBtn
+                  icon={""}
+                  btn={"btn-white"}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   <FiSend /> Send
                 </ActionBtn>
+                {isPopupVisible && (
+                  <div className="popup">
+                    <LuCheckCircle size={100} color={"#0062d1"} />
+                    <h1>Thank You!</h1>
+                    <p>Your Message was Sent Successfully!</p>
+                    <p>We will Respond to your Message Promptly</p>
+                  </div>
+                )}
               </form>
             </div>
           </div>
