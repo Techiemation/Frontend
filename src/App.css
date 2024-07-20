@@ -1289,3 +1289,9 @@ textarea {
   font-family: "Rubik";
   font-size: 1.6rem;
 }
+
+.form-submit-btn {
+  cursor: pointer;
+  font-family: "Rubik";
+  border: none;
+}

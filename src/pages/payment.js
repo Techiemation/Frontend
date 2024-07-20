@@ -1,14 +1,14 @@
 import SectionHeading from "../components/SectionHeading";
-import ActionBtn from "../components/ActionBtn";
 import paymentImage from "../resourses/illustration/8174445_3857457.jpg";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FiSend } from "react-icons/fi";
 import { LuCheckCircle } from "react-icons/lu";
 import React from "react";
+import { useForm } from "@formspree/react";
 
 export default function Payment() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -17,49 +17,31 @@ export default function Payment() {
   const [company, setCompany] = useState("");
   const [mobileNo, setMoblieNo] = useState("");
   const [planMessage, setPlanMessage] = useState("");
-
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [state, handleSubmit] = useForm("mqazkzlj");
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
 
-  const validateForm = () => {
-    const errors = {};
-    if (!firstname) errors.name = "Name is Required";
-    if (!company) {
-      errors.company = "Company is Required";
+  useEffect(() => {
+    if (state.succeeded) {
+      onSubmit();
     }
-    if (!mobileNo) {
-      errors.mobileNo = "Moblie Number is Required";
-    } else if (!/^\d{9,}$/.test(mobileNo)) {
-      errors.mobileNo = "Moblie Number should only have Numbers";
-    }
-    if (!planMessage) errors.message = "Plan Requirement is Required";
-    return errors;
-  };
+  }, [state.succeeded]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted successfully.");
+  function onSubmit() {
+    setFirstname("");
+    setLastname("");
+    setCompany("");
+    setMoblieNo("");
+    setPlanMessage("");
 
-      setFirstname("");
-      setLastname("");
-      setCompany("");
-      setMoblieNo("");
-      setPlanMessage("");
-
-      setIsPopupVisible(true);
-      setTimeout(() => {
-        setIsPopupVisible(false);
-      }, 2000);
-    } else {
-      const errorMessages = Object.values(validationErrors).join(", ");
-      alert(`Validation Errors:\n${errorMessages}`);
-    }
-  };
+    setIsPopupVisible(true);
+    setTimeout(() => {
+      setIsPopupVisible(false);
+    }, 2000);
+  }
 
   return (
     <>
@@ -75,12 +57,7 @@ export default function Payment() {
           <div className="contact-container">
             <div className="contact-2-grid">
               <img src={paymentImage} alt="payment" className="contact-image" />
-
-              <form
-                name="plan"
-                action="https://formspree.io/f/mqazkzlj"
-                method="POST"
-              >
+              <form onSubmit={handleSubmit}>
                 <div className="input-container">
                   <div className="field-container">
                     <div className="field">
@@ -89,11 +66,12 @@ export default function Payment() {
                       </label>
                       <input
                         type="text"
-                        name=""
+                        name="firstname"
                         id="firstname"
                         value={firstname}
                         onChange={(e) => setFirstname(e.target.value)}
                         className="input-field"
+                        required
                       />
                     </div>
                     <div className="field">
@@ -102,11 +80,12 @@ export default function Payment() {
                       </label>
                       <input
                         type="text"
-                        name=""
+                        name="lastname"
                         id="lastname"
                         value={lastname}
                         onChange={(e) => setLastname(e.target.value)}
                         className="input-field"
+                        required
                       />
                     </div>
                   </div>
@@ -117,11 +96,12 @@ export default function Payment() {
                       </label>
                       <input
                         type="text"
-                        name=""
+                        name="company"
                         id="company"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
                         className="input-field"
+                        required
                       />
                     </div>
                     <div className="field">
@@ -130,11 +110,19 @@ export default function Payment() {
                       </label>
                       <input
                         type="tel"
-                        name=""
+                        name="mobile-no"
                         id="mobile-no"
                         value={mobileNo}
                         onChange={(e) => setMoblieNo(e.target.value)}
+                        pattern="[0-9]{11}"
+                        // onInvalid={(e) =>
+                        //   e.target.setCustomValidity(
+                        //     "Please enter a valid 11-digit mobile number."
+                        //   )
+                        // }
+                        // onInput={(e) => e.target.setCustomValidity("")}
                         className="input-field"
+                        required
                       />
                     </div>
                   </div>
@@ -143,7 +131,7 @@ export default function Payment() {
                       Base plan requirement:
                     </label>
                     <textarea
-                      name=""
+                      name="plan-message"
                       id="plan-message"
                       className=""
                       value={planMessage}
@@ -151,18 +139,19 @@ export default function Payment() {
                       placeholder="Want an enterprise solution?
                       &oline;
                       Techiemation Offers end to end custom service for businesses of all sizes. Contact us today to discover how we can help achieve your goals."
-                    ></textarea>
+                      required
+                    />
                   </div>
                 </div>
 
-                <ActionBtn
-                  icon={""}
-                  btn={"btn-white"}
+                <button
                   type="submit"
-                  onClick={handleSubmit}
+                  disabled={state.submitting}
+                  className="action-btn btn-white form-submit-btn"
                 >
-                  <FiSend /> Send
-                </ActionBtn>
+                  Send <FiSend />
+                </button>
+
                 {isPopupVisible && (
                   <div className="popup">
                     <LuCheckCircle size={100} color={"#0062d1"} />

@@ -1,12 +1,12 @@
 import SectionHeading from "../components/SectionHeading";
-import ActionBtn from "../components/ActionBtn";
 import contactImage from "../resourses/illustration/12982910_5124556.jpg";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiSend } from "react-icons/fi";
 import { LuCheckCircle } from "react-icons/lu";
+import { useForm } from "@formspree/react";
 
 export default function Contact() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -16,43 +16,29 @@ export default function Contact() {
   const [message, setMessage] = useState("");
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [state, handleSubmit] = useForm("mqazkzlj");
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
 
-  const validateForm = () => {
-    const errors = {};
-    if (!firstname) errors.name = "Name is Required";
-    if (!email) {
-      errors.email = "Email is Required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email is Invalid";
+  useEffect(() => {
+    if (state.succeeded) {
+      onSubmit();
     }
-    if (!message) errors.message = "Message is Required";
-    return errors;
-  };
+  }, [state.succeeded]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted successfully.");
+  function onSubmit() {
+    setFirstname("");
+    setLastname("");
+    setEmail("");
+    setMessage("");
 
-      setFirstname("");
-      setLastname("");
-      setEmail("");
-      setMessage("");
-
-      setIsPopupVisible(true);
-      setTimeout(() => {
-        setIsPopupVisible(false);
-      }, 2000);
-    } else {
-      const errorMessages = Object.values(validationErrors).join(", ");
-      alert(`Validation Errors:\n${errorMessages}`);
-    }
-  };
+    setIsPopupVisible(true);
+    setTimeout(() => {
+      setIsPopupVisible(false);
+    }, 2000);
+  }
 
   return (
     <>
@@ -68,12 +54,7 @@ export default function Contact() {
           <div className="contact-container">
             <div className="contact-2-grid">
               <img src={contactImage} alt="contact" className="contact-image" />
-              <form
-                // onSubmit={handleSubmit}
-                name="contact"
-                action="https://formspree.io/f/mqazkzlj"
-                method="POST"
-              >
+              <form onSubmit={handleSubmit}>
                 <div className="field-container">
                   <div className="field">
                     <label htmlFor="name" className="field-label">
@@ -85,6 +66,7 @@ export default function Contact() {
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
                       id="name"
+                      name="name"
                       className="input-field"
                       required
                     />
@@ -98,6 +80,7 @@ export default function Contact() {
                       value={lastname}
                       onChange={(e) => setLastname(e.target.value)}
                       id="lastname"
+                      name="lastname"
                       className="input-field"
                       required
                     />
@@ -109,6 +92,7 @@ export default function Contact() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="input-field"
@@ -120,19 +104,22 @@ export default function Contact() {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   cols="30"
                   rows="10"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
-                ></textarea>
-                <ActionBtn
+                />
+
+                <button
                   type="submit"
-                  btn={"btn-white"}
-                  onClick={handleSubmit}
+                  disabled={state.submitting}
+                  className="action-btn btn-white form-submit-btn"
                 >
                   Send <FiSend />
-                </ActionBtn>
+                </button>
+
                 {isPopupVisible && (
                   <div className="popup">
                     <LuCheckCircle size={100} color={"#0062d1"} />
