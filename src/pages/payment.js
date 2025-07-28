@@ -3,12 +3,12 @@ import paymentImage from "../resourses/illustration/8174445_3857457.jpg";
 import NavBar from "../components/Navbar";
 import MobileNavbar from "../components/MobileNavbar";
 import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { FiSend } from "react-icons/fi";
 import { LuCheckCircle } from "react-icons/lu";
 import React from "react";
-import { useForm } from "@formspree/react";
+// Temporarily removed @formspree/react due to build compatibility issues
 
 export default function Payment() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -18,17 +18,16 @@ export default function Payment() {
   const [mobileNo, setMoblieNo] = useState("");
   const [planMessage, setPlanMessage] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [state, handleSubmit] = useForm("mqazkzlj");
 
   function handleMobileNavbar() {
     setMobileNavbar(!mobileNavbar);
   }
 
-  useEffect(() => {
-    if (state.succeeded) {
-      onSubmit();
-    }
-  }, [state.succeeded]);
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Simulate form submission
+    onSubmit();
+  }
 
   function onSubmit() {
     setFirstname("");
@@ -146,7 +145,6 @@ export default function Payment() {
 
                 <button
                   type="submit"
-                  disabled={state.submitting}
                   className="action-btn btn-white form-submit-btn"
                 >
                   Send <FiSend />

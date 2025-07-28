@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { UserContext } from '../UserContext';
@@ -7,7 +7,7 @@ import { UserContext } from '../UserContext';
 // Mock Firebase auth
 jest.mock('firebase/auth', () => ({
   getAuth: jest.fn(() => ({})),
-  signOut: jest.fn(() => Promise.resolve())
+  signOut: jest.fn((auth) => Promise.resolve())
 }));
 
 // Mock react-router-dom's useNavigate
@@ -123,6 +123,10 @@ describe('Navbar Component', () => {
   });
 
   test('handleSignOut function works correctly', async () => {
+    // Import and mock Firebase auth functions
+    const { signOut } = require('firebase/auth');
+    signOut.mockResolvedValue();
+
     const mockLogout = jest.fn();
     const mockContextValue = {
       user: 'testuser@example.com',
@@ -141,11 +145,11 @@ describe('Navbar Component', () => {
     // Click sign out button
     fireEvent.click(screen.getByTestId('signout-btn'));
     
-    // Wait for async operations
-    await new Promise(resolve => setTimeout(resolve, 0));
-    
-    expect(mockLogout).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith('/login-signup');
+    // Wait for async operations to complete
+    await waitFor(() => {
+      expect(mockLogout).toHaveBeenCalledTimes(1);
+      expect(mockNavigate).toHaveBeenCalledWith('/login-signup');
+    });
   });
 
   test('signOut handles errors gracefully', async () => {
