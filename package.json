@@ -20,8 +20,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "NODE_OPTIONS=\"--openssl-legacy-provider\" react-scripts build",
+    "test": "NODE_OPTIONS=\"--openssl-legacy-provider\" react-scripts test",
+    "test:ci": "NODE_OPTIONS=\"--openssl-legacy-provider\" react-scripts test --watchAll=false --coverage --passWithNoTests",
+    "test:coverage": "NODE_OPTIONS=\"--openssl-legacy-provider\" react-scripts test --watchAll=false --coverage",
+    "test:unit": "NODE_OPTIONS=\"--openssl-legacy-provider\" react-scripts test --watchAll=false --testPathPattern='__tests__'",
+    "test:watch": "NODE_OPTIONS=\"--openssl-legacy-provider\" react-scripts test --watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
