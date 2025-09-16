@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState, useContext } from "react";
 import whiteLogo from "../resourses/Logo/whiteLogo3.png";
 import { CgCloseO } from "react-icons/cg";

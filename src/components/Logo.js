@@ -1,3 +1,4 @@
+import React from "react";
 import whiteLogo from "../resourses/Logo/whiteLogo2.png";
 import { Link } from "react-router-dom";
 

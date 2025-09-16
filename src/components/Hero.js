@@ -1,3 +1,4 @@
+import React from "react";
 import illustration from "../resourses/illustration/7119041_3394878.jpg";
 import ActionBtn from "./ActionBtn";
 

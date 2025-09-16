@@ -1,3 +1,4 @@
+import React from "react";
 import SectionHeading from "./SectionHeading";
 import TeamCard from "./TeamCard";
 

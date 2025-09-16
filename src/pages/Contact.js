@@ -1,3 +1,4 @@
+import React from "react";
 import SectionHeading from "../components/SectionHeading";
 import contactImage from "../resourses/illustration/12982910_5124556.jpg";
 import NavBar from "../components/Navbar";

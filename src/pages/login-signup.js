@@ -1,3 +1,4 @@
+import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
 import { MdOutlinePersonAdd } from "react-icons/md";

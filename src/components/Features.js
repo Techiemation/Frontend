@@ -1,3 +1,4 @@
+import React from "react";
 import Summarization from "../resourses/img/200.jpg";
 import Translation from "../resourses/img/100.jpg";
 import Scraping from "../resourses/img/300.jpg";

@@ -1,3 +1,4 @@
+import React from "react";
 import SectionHeading from "./SectionHeading";
 
 import yaseen from "../resourses/photo/new/yaseen.jpg";

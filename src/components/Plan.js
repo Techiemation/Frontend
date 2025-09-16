@@ -1,3 +1,4 @@
+import React from "react";
 import SectionHeading from "./SectionHeading";
 // import { ImInfinite } from "react-icons/im";
 import { FaCheck, FaXmark } from "react-icons/fa6";

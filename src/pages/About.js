@@ -1,3 +1,4 @@
+import React from "react";
 import Idea from "../components/idea";
 import NavBar from "../components/Navbar";
 import Team from "../components/Team";

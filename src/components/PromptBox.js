@@ -1,3 +1,4 @@
+import React from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../firebase";
@@ -60,7 +61,7 @@ export default function PromptBox({
 
   function summarizeText(e) {
     axios
-      .post("https://techiesummarizer.azurewebsites.net/summarize", {
+      .post("https://techiemation.azurewebsites.net/summarize", {
         text: userPrompt,
       })
       .then((response) => {
@@ -82,7 +83,7 @@ export default function PromptBox({
 
   const translateText = () => {
     axios
-      .post("https://techiesummarizer.azurewebsites.net/translator", {
+      .post("https://techiemation.azurewebsites.net/translator", {
         language: language,
         text: translatedPrompt || userPrompt,
       })
@@ -125,7 +126,7 @@ export default function PromptBox({
     // Make a GET request to your Flask backend to fetch data from the link
     axios
       .get(
-        `https://techiesummarizer.azurewebsites.net/api/scrape?url=${encodeURIComponent(
+        `https://techiemation.azurewebsites.net/api/scrape?url=${encodeURIComponent(
           link
         )}`
       )

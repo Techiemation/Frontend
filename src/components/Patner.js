@@ -1,3 +1,4 @@
+import React from "react";
 import SectionHeading from "./SectionHeading";
 // import MsLight from "../resourses/img/MS_Startups_Light.png";
 import MsDark from "../resourses/img/MS_Startups_Dark.png";

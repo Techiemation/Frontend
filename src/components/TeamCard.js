@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function TeamCard({ name, position, isLead, image }) {
   return (
     <div className="team-card">

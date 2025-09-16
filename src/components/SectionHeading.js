@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function SectionHeading({ shortheading, mainHeading }) {
   return (
     <div className="section-heading">
